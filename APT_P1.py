@@ -153,8 +153,8 @@ Instead I will provide it (nmin,nmax): (0,120)
 Recall, ideally, ~(qmin,qmax): (0.3,1.3) but this is empirically determined (i.e. a suggestion more than a rule).
 '''
 
-nmin=11
-nmax=49
+nmin=8
+nmax=34
 
 '''
 Note, LSM algorithms can take input "guesses"(g) as a starting point for minimization
@@ -217,7 +217,6 @@ print('from scipy fit, Rg and Rg relative Error: %.2f %.8f'%(scipy_dict['scipyRg
                                                              scipy_dict['scipyRg_relErr']))
 
 hb_dict = {'hb_qminRg':hb_qminRg,'hb_qmaxRg':hb_qmaxRg,'hbRg':hbRg,'hbRg_relErr':hbRg_relErr}
-
 #print(hb_dict.keys()) # very useful property of dictionaries
 #print(hb_dict.values())
 
@@ -227,6 +226,8 @@ Example of how to clean up the output a bit
 
 print('from hb fit, Rg and Rg relative Error: %.2f %.8f'%(hb_dict['hbRg'],
                                                              hb_dict['hbRg_relErr']))
+
+print('qminRg,qmaxRg',hb_dict['hb_qminRg'],hb_dict['hb_qmaxRg'])
 
 '''
 Generate an automated output to "warn" us if the relative error is 
@@ -327,7 +328,7 @@ def PDDF(shape,Dmax,I,q):
     return P_r,r_range
 
 
-Pr,r=PDDF(shape='FoxS',Dmax=55,I=data['I(q)'],q=data['q'])
+Pr,r=PDDF(shape='FoxS',Dmax=80,I=data['I(q)'],q=data['q'])
 
 for entry in Pr:
     if np.isnan(entry) == True:
@@ -392,7 +393,7 @@ First we will modify the PDDF function (PDDF_2) slightly to make our lives easie
 def PDDF_2(shape,Dmax,I,q): # set a fixed length of r values
     """plot pair distance distribution""" # this will make things a lot easier to deal with downstream
     # reference:"Svergen&Koch,Rep.Phys.Prog 66(2003) 1735-82
-    r_range=np.linspace(0,Dmax*1.8,100)
+    r_range=np.linspace(0,Dmax*1.4,100)
     if shape == "FoxS":
         if q[0] == 0:
             q = q[1:]
@@ -421,7 +422,7 @@ def PDDF_2(shape,Dmax,I,q): # set a fixed length of r values
 
 ## Set parameters for iterations of PDDF    
 interval=10 # sets number of iterations
-dmin,dmax=25,55
+dmin,dmax=45,85
 Dmax=np.linspace(dmin,dmax,interval)
 print('Final Dmax Value in the Dmax list: %s'%Dmax[9])
 n = len(PDDF_2(shape='FoxS',Dmax=Dmax[0],I=data['I(q)'],q=data['q']))
@@ -458,27 +459,29 @@ or it isn't worth the effort (for some reason) to make the plots publication qua
 (2) Plotted as a function of the number of points (fixed, 99 for every profile) for better visualization
 '''
 
-plt.plot(np.linspace(0,Dmax[0]*1.8,n),PDDF_list[0],
-         label='0')
-plt.plot(np.linspace(0,Dmax[1]*1.8,n),PDDF_list[1],
-         label='1')
-plt.plot(np.linspace(0,Dmax[2]*1.8,n),PDDF_list[2],
-         label='2')
-plt.plot(np.linspace(0,Dmax[3]*1.8,n),PDDF_list[3],
-         label='3')
-plt.plot(np.linspace(0,Dmax[4]*1.8,n),PDDF_list[4],
-         label='4')
-plt.plot(np.linspace(0,Dmax[5]*1.8,n),PDDF_list[5],
-         label='5')
-plt.plot(np.linspace(0,Dmax[6]*1.8,n),PDDF_list[6],
-         label='6')
-plt.plot(np.linspace(0,Dmax[7]*1.8,n),PDDF_list[7],
-         label='7')
-plt.plot(np.linspace(0,Dmax[8]*1.8,n),PDDF_list[8],
-         label='8')
+plt.plot(np.linspace(0,Dmax[0]*1.4,n),PDDF_list[0],
+         label='Dmax: %.1f'%Dmax[0] + ' ' + '$\AA$')
+plt.plot(np.linspace(0,Dmax[1]*1.4,n),PDDF_list[1],
+         label='Dmax: %.1f'%Dmax[1] + ' ' + '$\AA$')
+plt.plot(np.linspace(0,Dmax[2]*1.4,n),PDDF_list[2],
+         label='Dmax: %.1f'%Dmax[2] + ' ' + '$\AA$')
+plt.plot(np.linspace(0,Dmax[3]*1.4,n),PDDF_list[3],
+         label='Dmax: %.1f'%Dmax[3] + ' ' + '$\AA$')
+plt.plot(np.linspace(0,Dmax[4]*1.4,n),PDDF_list[4],
+         label='Dmax: %.1f'%Dmax[4] + ' ' + '$\AA$')
+plt.plot(np.linspace(0,Dmax[5]*1.4,n),PDDF_list[5],
+         label='Dmax: %.1f'%Dmax[5] + ' ' + '$\AA$')
+plt.plot(np.linspace(0,Dmax[6]*1.4,n),PDDF_list[6],
+         label='Dmax: %.1f'%Dmax[6] + ' ' + '$\AA$')
+plt.plot(np.linspace(0,Dmax[7]*1.4,n),PDDF_list[7],
+         label='Dmax: %.1f'%Dmax[7] + ' ' + '$\AA$')
+plt.plot(np.linspace(0,Dmax[8]*1.4,n),PDDF_list[8],
+         label='Dmax: %.1f'%Dmax[8] + ' ' + '$\AA$')
+plt.plot(np.linspace(0,Dmax[9]*1.4,n),PDDF_list[9],
+         label='Dmax: %.1f'%Dmax[9] + ' ' + '$\AA$')
 plt.legend(loc='best')
 plt.ylim(bottom=0,top=1.09)
-plt.xlim(-5,90)
+#plt.xlim(-5,90)
 #plt.ylim(bottom=0,top=4000000)
 plt.savefig('VariableDmax_PDDF.png',bbox_inches='tight',dpi=300,
             format='png')
@@ -520,7 +523,7 @@ plt.show()
 '''
 How to export data? What if a collaborator wants only a data frame from your analysis, not the entire script and repository?
 '''
-r0,Pr0=np.linspace(0,Dmax[0]*1.8,n),PDDF_list[0]
+r0,Pr0=np.linspace(0,Dmax[0]*1.4,n),PDDF_list[0]
 entryCount=0
 
 with open('example_export.csv','w',newline='') as csvfile:
