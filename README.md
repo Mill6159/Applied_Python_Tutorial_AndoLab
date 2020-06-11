@@ -13,7 +13,7 @@ _For example:_
 ## How The Code Works
 A theoritical scattering curve was determined from the crystal structure, PDBID=6LYZ, via the software FoxS. I've provided the scattering profile in this repository.
 
-From this theoritical profile, we will learn how to:
+From this theoritical profile, we will learn how to:  
 (1) Import data  
 (2) Import modules/classes  
 (3) 
