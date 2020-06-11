@@ -23,7 +23,7 @@ From this theoritical profile, we will learn how to:
 1. For the calculation for the pair-wise distance distribution function, see: !REF
 
 
-**I turned off RuntimeWarnings caused by division by 0. Beware!!**
+_I turned off RuntimeWarnings caused by division by 0. Beware!!_
 ```python
 import warnings
 
