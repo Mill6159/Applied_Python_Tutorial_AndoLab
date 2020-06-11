@@ -10,7 +10,7 @@ _For example:_
 **Potential User Issues**   
 (1) Attempting to run code with Python2 - you will get lots of print and other errors.  
 (2) Non-Anaconda Python may result in missing packages - use 'pip' to install necessary modules  
-    (2a) example:  
+_for example:_ 
 ```shell script
 pip3 install matplotlib  
 pip3 install numpy  
