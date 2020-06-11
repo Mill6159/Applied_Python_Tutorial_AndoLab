@@ -16,6 +16,7 @@ pip3 install matplotlib
 pip3 install numpy  
 pip3 install scipy  
 ```
+(3) 
      
 ## How The Code Works
 A theoritical scattering curve was determined from the crystal structure, PDBID=6MT9, via the software FoxS. I've provided the scattering profile in this repository.

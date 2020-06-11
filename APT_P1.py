@@ -246,10 +246,10 @@ Name the file: PlotClass.py
 Now we can use our beautiful plot class to generate a few plots to visualize our data
 '''
 
-##### End lecture 1
+##### End lecture 1 #####
 
+visuals = PlotClass() # assign class to an object. The object will now have all characteristics of the class (def __init__(self):)
 
-visuals = PlotClass()
 
 visuals.semilogyPlot(data['q'],data['I(q)'],
                   plotlabel='Scattering Profile',savelabel='Example_ScatteringCurve',
@@ -308,6 +308,10 @@ def PDDF(shape,Dmax,I,q):
         else:
             q = q
 
+    '''
+    Initialize an array to stick the data in
+    Note: this MUST be outside of the loop, otherwise we will clear the array for each iteration of the loop.
+    '''
     P_r = np.array([], dtype=float)
     
     '''
@@ -322,6 +326,14 @@ def PDDF(shape,Dmax,I,q):
 
 
 Pr,r=PDDF(shape='FoxS',Dmax=55,I=data['I(q)'],q=data['q'])
+
+for entry in Pr:
+    if np.isnan(entry) == True:
+        print("Uh oh, we've generated an nan value")
+        nanIndex=np.where(entry)
+        print("The index of the nan value is: %s"%str(nanIndex[0]))
+
+
 '''
 Oh no, there is an nan value generated.. Why so? We can (1) fix the code
 
