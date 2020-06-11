@@ -14,9 +14,9 @@ _For example:_
 A theoritical scattering curve was determined from the crystal structure, PDBID=6LYZ, via the software FoxS. I've provided the scattering profile in this repository.
 
 From this theoritical profile, we will learn how to:
-(1) Import data
-(2) Import modules/classes
-(3)
+(1) Import data \n
+(2) Import modules/classes \n
+(3) \n
 
 **Details of the backend of the code:**
 
