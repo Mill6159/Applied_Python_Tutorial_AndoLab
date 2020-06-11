@@ -12,9 +12,9 @@ _For example:_
 (2) Non-Anaconda Python may result in missing packages - use 'pip' to install necessary modules  
     (2a) example:  
      ```python
-     pip3 install matplotlib
-     pip3 install numpy
-     pip3 install scipy
+     pip3 install matplotlib  
+     pip3 install numpy  
+     pip3 install scipy  
      ```
 ## How The Code Works
 A theoritical scattering curve was determined from the crystal structure, PDBID=6MT9, via the software FoxS. I've provided the scattering profile in this repository.
