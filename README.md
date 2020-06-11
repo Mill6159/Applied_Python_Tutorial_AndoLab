@@ -7,8 +7,8 @@ Note: This tutorial will attempt to touch on all basic concepts covered in Darre
 If you choose to modify this code you can always go back and access the original code here on Github. Currently, only Rob Miller can modify the 'master branch'.
 
 _For example:_
-**Potential User Issues** 
-
+**Potential User Issues**   
+(1) XLG.ipynb is a Jupyter notebook
 
 ## How The Code Works
 A theoritical scattering curve was determined from the crystal structure, PDBID=6LYZ, via the software FoxS. I've provided the scattering profile in this repository.
