@@ -38,7 +38,7 @@ class PlotClass:
         plt.ylabel(ylabel,size=22)
         plt.xlabel(xlabel,size=22)
         plt.plot(X,Y,'-',label=plotlabel,
-                 color='#E55334')
+                 color='#E55334') # best to use HTML color codes: https://htmlcolorcodes.com
         plt.legend(numpoints=1,fontsize=18,loc='best')
         fig.tight_layout()
         plt.savefig(savelabel+'.png',format='png',

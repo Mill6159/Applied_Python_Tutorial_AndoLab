@@ -373,7 +373,7 @@ Pr_norm = quickNormalize(Pr) # recall we are overwritng the previous Pr value
 ### I NEED TO FIX A FEW THINGS HERE
 
 '''
-Note: Here we are adding a baseline to improve the visualization
+Note: Here we are adding a baseline(Y2) to improve the visualization
 '''
 visuals.twoPlot(X=r,Y1=Pr_norm,Y2=[0]*len(Pr_norm),savelabel='Example_Pr',plotlabel1='Pair Distance Distribution',plotlabel2='Baseline',
                   xlabel='r($\AA$)',ylabel='P(r)',linewidth=4)
@@ -384,7 +384,7 @@ How can we approximate Dmax?
     (1) Iterate over the PDDF function
     (2) Save to memory the value of Dmax that gives P(rmin) & P(rmax) = 0
     
-First we will modify the PDDF function slightly to make our lives easier
+First we will modify the PDDF function (PDDF_2) slightly to make our lives easier
 '''
 
 def PDDF_2(shape,Dmax,I,q): # set a fixed length of r values
@@ -418,12 +418,13 @@ def PDDF_2(shape,Dmax,I,q): # set a fixed length of r values
 
 
 ## Set parameters for iterations of PDDF    
-interval=10
+interval=10 # sets number of iterations
 dmin,dmax=25,55
 Dmax=np.linspace(dmin,dmax,interval)
-print('Final Dmax Value: %s'%Dmax[9])
+print('Final Dmax Value in the Dmax list: %s'%Dmax[9])
 n = len(PDDF_2(shape='FoxS',Dmax=Dmax[0],I=data['I(q)'],q=data['q']))
-PDDF_list=np.empty(shape=((interval),n))
+
+PDDF_list=np.empty(shape=((interval),n)) #PDDF_list=np.empty(shape=((interval),n)) #
 
 #i=9
 #while i<9:
@@ -443,8 +444,17 @@ for i in PDDF_list:
         
 for i in range(len(PDDF_list)):
     PDDF_list[i]=quickNormalize(PDDF_list[i])
-    
 
+
+'''
+Quick example of how to 'toss' together a plot when it is necessary to do so quickly
+or it isn't worth the effort (for some reason) to make the plots publication quality
+
+*** Matplotlib will allow us to stack as many as we want!
+
+(1) Overlaid with the proper r_range
+(2) Plotted as a function of the number of points (fixed, 99 for every profile) for better visualization
+'''
 
 plt.plot(np.linspace(0,Dmax[0]*1.8,n),PDDF_list[0],
          label='0')
@@ -464,8 +474,6 @@ plt.plot(np.linspace(0,Dmax[7]*1.8,n),PDDF_list[7],
          label='7')
 plt.plot(np.linspace(0,Dmax[8]*1.8,n),PDDF_list[8],
          label='8')
-#plt.plot(np.linspace(0,Dmax[9]*1.8,n),PDDF_list[9],
-#         label='9')
 plt.legend(loc='best')
 plt.ylim(bottom=0,top=1.09)
 plt.xlim(-5,90)
@@ -506,8 +514,5 @@ plt.savefig('VariableDmax_PDDF2.png',bbox_inches='tight',dpi=300,
             format='png')
 plt.show()
 
-plt.plot(np.linspace(0,Dmax[0]*1.8,n),PDDF_list[0],
-         label='0')
-plt.show()
 
 # add how to export data
