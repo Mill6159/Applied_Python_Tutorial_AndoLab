@@ -35,6 +35,7 @@ import numpy as np # this is a math package
 from scipy.optimize import curve_fit as cf
 from PlotClass import *
 from matplotlib import pyplot as plt
+import csv
 import warnings
 
 warnings.filterwarnings("ignore", category=RuntimeWarning) # deals with dividing through by zero but be careful!!
@@ -237,6 +238,7 @@ if (100*hb_dict['hbRg_relErr']) > 1.0:
     print('Review quality of fit')
 else:
     print('Percent relative error in Rg is less than 1%:' + ' ' + '%.2f'%(100*hb_dict['hbRg_relErr'])+'%')
+    print(' ')
 
 '''
 Stop!
@@ -515,4 +517,20 @@ plt.savefig('VariableDmax_PDDF2.png',bbox_inches='tight',dpi=300,
 plt.show()
 
 
-# add how to export data
+'''
+How to export data? What if a collaborator wants only a data frame from your analysis, not the entire script and repository?
+'''
+r0,Pr0=np.linspace(0,Dmax[0]*1.8,n),PDDF_list[0]
+entryCount=0
+
+with open('example_export.csv','w',newline='') as csvfile:
+    fieldnames=['Index','r0(A)','P(r)']
+    thewriter=csv.DictWriter(csvfile,fieldnames=fieldnames)
+    thewriter.writeheader()
+    for i in range(len(r0)):
+        entryCount += 1
+        thewriter.writerow({'Index':entryCount,'r0(A)':r0[i],'P(r)':Pr0[i]})
+
+'''
+Can you write a loop that exports all of the r/P(r) data?
+'''
