@@ -13,6 +13,13 @@ class PlotClass:
     def __init__(self):
         '''
         Describe the class here.
+        The initialization of the class sets a few global parameters
+        (1) Axes width
+        (2) Line width
+        (3) Set font to Helvetica. Note, if when running locally you receive a traceback error
+            along the lines of "falling back to Arial" you need to enable the base Helvetica font
+            provided by MacOS. If this is important to you, let me know, it's a pretty quick fix!
+            Rob: rcm347@cornell.edu
         '''
         print('--------------------------------------------------------------')
         print('Plot class was called')

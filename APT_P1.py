@@ -175,6 +175,7 @@ scipyRg = np.sqrt(-3*c[0])
 scipyRg_relErr = np.absolute(cov[0,0]/c[0])
 scipy_qminRg = scipyRg*data['q'][nmin]
 scipy_qmaxRg = scipyRg*data['q'][nmax]
+
 '''
 Perform the analysis with our "homebaked" function
 '''
@@ -530,7 +531,8 @@ with open('example_export.csv','w',newline='') as csvfile:
     fieldnames=['Index','r0(A)','P(r)']
     thewriter=csv.DictWriter(csvfile,fieldnames=fieldnames)
     thewriter.writeheader()
-    for i in range(len(r0)):
+    n=len(r0)
+    for i in range(n):
         entryCount += 1
         thewriter.writerow({'Index':entryCount,'r0(A)':r0[i],'P(r)':Pr0[i]})
 

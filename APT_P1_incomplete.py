@@ -249,54 +249,58 @@ Now we can use our beautiful plot class to generate a few plots to visualize our
 '''
 
 # ##### End lecture 1 #####
-#
+
 # visuals = PlotClass()  # assign class to an object. The object will now have all characteristics of the class (def __init__(self):)
-#
-# visuals.semilogyPlot(data['q'],data['I(q)'],
+
+'''
+Generate a semilogy plot of I(q) vs q
+'''
+
+# visuals.YYY(YYY,YYY,
 #                      plotlabel='Scattering Profile',savelabel='Example_ScatteringCurve',
 #                      xlabel='q ($\AA^{-1}$)',
 #                      ylabel='I(q)')
-#
-# '''
-# Compare theoritical Guiner region to Guiner model
-# '''
-#
-# visuals.twoPlot(X=data['q'][nmin:nmax] ** 2,Y1=lineModel(data['q'][nmin:nmax] ** 2,hb_slope,hb_inter),
+
+'''
+Compare theoritical Guiner region to Guiner model
+'''
+
+# visuals.twoPlot(X=YYY[nmin:nmax] ** 2,Y1=lineModel(YYY,YYY,YYY),
 #                 Y2=np.log(data['I(q)'][nmin:nmax]),
 #                 plotlabel1='Model',plotlabel2='Theoretical Data',
 #                 savelabel='Example_Guiner2',
-#                 xlabel='q$^{2}$ ($\AA^{-2}$)',
+#                 xlabel='q$^{2}$ ($\AA^{-2}$)', # matplotlib can interpret LateX which allows us to make more beautiful labels.
 #                 ylabel='ln(I(q))')
-#
-# '''
-# Look at the model in reciprocal space (rather than log reciprocal space)
-# How to convert back?
-# '''
-#
-#
+
+'''
+Look at the model in reciprocal space (rather than log reciprocal space)
+How to convert back?
+'''
+
+
 # def gaussianGuiner(X,I0,Rg):
 #     return I0 * np.exp(-(1 / 3) * (X ** 2) * (Rg ** 2))
-#
-#
-# gaussModel = gaussianGuiner(data['q'][nmin:nmax],hbI0,hbRg)
-#
-# visuals.twoPlot(X=data['q'][nmin:nmax],Y1=gaussModel,
+
+
+# gaussModel = gaussianGuiner(YYY[nmin:nmax],YYY,YYY)
+
+# visuals.twoPlot(X=YYY[nmin:nmax],Y1=gaussModel,
 #                 Y2=data['I(q)'][nmin:nmax],
 #                 plotlabel1='Model',plotlabel2='Theoretical Data',
 #                 savelabel='Example_Guiner3',
-#                 xlabel='q ($\AA^{-1}$)',
+#                 xlabel='q (YYY)',
 #                 ylabel='I(q)')
-#
-# ##############################################################################
-#
-# '''
-# Pair distance distribution calculation:
-#     (1) We will define a new function for this "PDDF":
-#         (a) I left the potential capability to add other shape profiles
-#         where you will have to deal with properly interpolating q onto I(q)
-# '''
-#
-#
+
+##############################################################################
+
+'''
+Pair distance distribution calculation:
+    (1) We will define a new function for this "PDDF":
+        (a) I left the potential capability to add other shape profiles
+        where you will have to deal with properly interpolating q onto I(q)
+'''
+
+
 # def PDDF(shape,Dmax,I,q):
 #     """plot pair distance distribution"""
 #     # reference:"Svergen&Koch,Rep.Phys.Prog 66(2003) 1735-82
@@ -324,37 +328,37 @@ Now we can use our beautiful plot class to generate a few plots to visualize our
 #         P_r = np.append(P_r,p_r)
 #
 #     return P_r,r_range
-#
-#
+
+
 # Pr,r = PDDF(shape='FoxS',Dmax=80,I=data['I(q)'],q=data['q'])
-#
+
 # for entry in Pr:
-#     if np.isnan(entry) == True:
+#     if np.isnan(YYY) == True:
 #         print("Uh oh, we've generated an nan value")
-#         nanIndex = np.where(entry)
-#         print("The index of the nan value is: %s" % str(nanIndex[0]))
-#
-# '''
-# Oh no, there is an nan value generated.. Why so? We can (1) fix the code
-#
-# Or...
-#
-# (2) Hack our way out of it. Both are good to know how to do.
-# '''
-#
+#         nanIndex = np.where(YYY)
+#         print("The index of the nan value is: %s" % str(YYY[0]))
+
+'''
+Oh no, there is an nan value generated.. Why so? We can (1) fix the code
+
+Or...
+
+(2) Hack our way out of it. Both are good to know how to do.
+'''
+
 # nanCount = np.isnan(Pr).sum()
 # print('# of nan values: %s' % nanCount)
 # Pr = Pr[np.logical_not(np.isnan(Pr))]
-# r = r[nanCount:]  # cutoff all points that were nan in Pr dataframe (vectors must be of equal length)
-#
-# '''
-# Normalizing the Signal
-# Basic function for normalizing a signal between 0-1 - Note we could bake this into PDDF
-# Extra credit: Write a function that normalizes integral from rmin-rmax to 1
-#     Hint: try numpy.trapz()
-# '''
-#
-#
+# r = r[YYY:]  # cutoff all points that were nan in Pr dataframe (vectors must be of equal length)
+
+'''
+Normalizing the Signal
+Basic function for normalizing a signal between 0-1 - Note we could bake this into PDDF
+Extra credit: Write a function that normalizes integral from rmin-rmax to 1
+    Hint: try numpy.trapz()
+'''
+
+
 # def quickNormalize(sig):
 #     n = len(sig)
 #     sig = np.absolute(sig)
@@ -366,28 +370,31 @@ Now we can use our beautiful plot class to generate a few plots to visualize our
 #     for i in range(len(sig)):
 #         Ynew[i] = (sig[i] - minY) / (maxY - minY)
 #     return Ynew
-#
-#
+
+
 # Pr_norm = quickNormalize(Pr)  # recall we are overwritng the previous Pr value
-#
-# ### I NEED TO FIX A FEW THINGS HERE
-#
-# '''
-# Note: Here we are adding a baseline(Y2) to improve the visualization
-# '''
+
+
+
+'''
+Note: Here we are adding a baseline(Y2) to improve the visualization
+How can we write that?
+'''
+
+
 # visuals.twoPlot(X=r,Y1=Pr_norm,Y2=[0] * len(Pr_norm),savelabel='Example_Pr',plotlabel1='Pair Distance Distribution',
 #                 plotlabel2='Baseline',
 #                 xlabel='r($\AA$)',ylabel='P(r)',linewidth=4)
 #
-# '''
-# How can we approximate Dmax?
-#     (1) Iterate over the PDDF function
-#     (2) Save to memory the value of Dmax that gives P(rmin) & P(rmax) = 0
-#
-# First we will modify the PDDF function (PDDF_2) slightly to make our lives easier
-# '''
-#
-#
+'''
+How can we approximate Dmax?
+    (1) Iterate over the PDDF function
+    (2) Save to memory the value of Dmax that gives P(rmin) & P(rmax) = 0
+
+First we will modify the PDDF function (PDDF_2) slightly to make our lives easier
+'''
+
+
 # def PDDF_2(shape,Dmax,I,q):  # set a fixed length of r values
 #     """plot pair distance distribution"""  # this will make things a lot easier to deal with downstream
 #     # reference:"Svergen&Koch,Rep.Phys.Prog 66(2003) 1735-82
