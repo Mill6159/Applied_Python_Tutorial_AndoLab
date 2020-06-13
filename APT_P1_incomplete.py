@@ -53,6 +53,8 @@ Import FoxS Data: I generated this for us from the crystal structure PDBID: 6MT9
 How can we access the data?
 #1 - the 'head' of the data(i.e. first 5 lines)?
 '''
+
+
 # N = 5 # How many lines do we want to look at?
 # # Method 1:
 # filename = '6mt9.pdb.dat'
@@ -71,15 +73,17 @@ How can we access the data?
 #         line = next(YYY)
 #         print(line)
 
-# # Method 3: Can you think of another one?
-#
-# # N = 10
-# # with open("file.txt", "a") as file:  # the a opens it in append mode
-# #    for i in range(N):
-# #        line = next(YYY).strip()
-# #        print(YYY)
+# Method 3: Can you think of another one?
+
+# N = 10
+# with open("file.txt", "a") as file:  # the a opens it in append mode
+#    for i in range(N):
+#        line = next(YYY).strip()
+#        print(YYY)
 
 ## Mention stack exchange
+
+
 '''
 But... we used a convenient python module 'numpy' to open the file
 So life is even easier but we may have lost information..
@@ -451,7 +455,6 @@ should be 99 everytime..
 '''
 
 
-
 # for i in PDDF_list:
 #     for YYY in range(0,(YYY)):
 #         PDDF_list[YYY] = (PDDF_2(shape='FoxS',Dmax=Dmax[i],I=data['I(q)'],q=data['q']))
@@ -469,78 +472,82 @@ or it isn't worth the effort (for some reason) to make the plots publication qua
 (2) Plotted as a function of the number of points (fixed, 99 for every profile) for better visualization
 '''
 
-# plt.plot(np.linspace(0,Dmax[0] * 1.4,n),PDDF_list[0],
-#          label='Dmax: %.1f' % Dmax[0] + ' ' + '$\AA$')
-# plt.plot(np.linspace(0,Dmax[1] * 1.4,n),PDDF_list[1],
+# plt.plot(np.linspace(0,Dmax[YYY] * 1.4,n),PDDF_list[YYY],
+#          label='Dmax: %.1f' % Dmax[YYY] + ' ' + '$\AA$')
+# plt.plot(np.linspace(0,Dmax[YYY] * 1.4,n),PDDF_list[YYY],
 #          label='Dmax: %.1f' % Dmax[1] + ' ' + '$\AA$')
-# plt.plot(np.linspace(0,Dmax[2] * 1.4,n),PDDF_list[2],
-#          label='Dmax: %.1f' % Dmax[2] + ' ' + '$\AA$')
-# plt.plot(np.linspace(0,Dmax[3] * 1.4,n),PDDF_list[3],
-#          label='Dmax: %.1f' % Dmax[3] + ' ' + '$\AA$')
-# plt.plot(np.linspace(0,Dmax[4] * 1.4,n),PDDF_list[4],
+# plt.plot(np.linspace(0,Dmax[YYY] * 1.4,n),PDDF_list[YYY],
+#          label='Dmax: %.1f' % Dmax[YYY] + ' ' + '$\AA$')
+# plt.plot(np.linspace(0,Dmax[YYY] * 1.4,n),PDDF_list[YYY],
+#          label='Dmax: %.1f' % Dmax[YYY] + ' ' + '$\AA$')
+# plt.plot(np.linspace(0,Dmax[YYY] * 1.4,n),PDDF_list[YYY],
 #          label='Dmax: %.1f' % Dmax[4] + ' ' + '$\AA$')
-# plt.plot(np.linspace(0,Dmax[5] * 1.4,n),PDDF_list[5],
-#          label='Dmax: %.1f' % Dmax[5] + ' ' + '$\AA$')
-# plt.plot(np.linspace(0,Dmax[6] * 1.4,n),PDDF_list[6],
-#          label='Dmax: %.1f' % Dmax[6] + ' ' + '$\AA$')
-# plt.plot(np.linspace(0,Dmax[7] * 1.4,n),PDDF_list[7],
-#          label='Dmax: %.1f' % Dmax[7] + ' ' + '$\AA$')
-# plt.plot(np.linspace(0,Dmax[8] * 1.4,n),PDDF_list[8],
-#          label='Dmax: %.1f' % Dmax[8] + ' ' + '$\AA$')
-# plt.plot(np.linspace(0,Dmax[9] * 1.4,n),PDDF_list[9],
-#          label='Dmax: %.1f' % Dmax[9] + ' ' + '$\AA$')
+# plt.plot(np.linspace(0,Dmax[YYY] * 1.4,n),PDDF_list[YYY],
+#          label='Dmax: %.1f' % Dmax[YYY] + ' ' + '$\AA$')
+# plt.plot(np.linspace(0,Dmax[YYY] * 1.4,n),PDDF_list[YYY],
+#          label='Dmax: %.1f' % Dmax[YYY] + ' ' + '$\AA$')
+# plt.plot(np.linspace(0,Dmax[YYY] * 1.4,n),PDDF_list[YYY],
+#          label='Dmax: %.1f' % Dmax[YYY] + ' ' + '$\AA$')
+# plt.plot(np.linspace(0,Dmax[YYY] * 1.4,n),PDDF_list[YYY],
+#          label='Dmax: %.1f' % Dmax[YYY] + ' ' + '$\AA$')
+# plt.plot(np.linspace(0,Dmax[YYY] * 1.4,n),PDDF_list[YYY],
+#          label='Dmax: %.1f' % Dmax[YYY] + ' ' + '$\AA$')
 # plt.legend(loc='best')
-# plt.ylim(bottom=0,top=1.09)
-# # plt.xlim(-5,90)
-# # plt.ylim(bottom=0,top=4000000)
+# # manually set x and y limits?
 # plt.savefig('VariableDmax_PDDF.png',bbox_inches='tight',dpi=300,
 #             format='png')
 # plt.show()
-#
-# plt.plot(PDDF_list[0],
-#          label='Dmax: %s' % Dmax[0] + ' ' + '$\AA$')
-# plt.plot(PDDF_list[1],
-#          label='Dmax: %.1f' % Dmax[1] + ' ' + '$\AA$')
-# plt.plot(PDDF_list[2],
-#          label='Dmax: %.1f' % Dmax[2] + ' ' + '$\AA$')
-# plt.plot(PDDF_list[3],
-#          label='Dmax: %.1f' % Dmax[3] + ' ' + '$\AA$')
-# plt.plot(PDDF_list[4],
-#          label='Dmax: %.1f' % Dmax[4] + ' ' + '$\AA$')
-# plt.plot(PDDF_list[5],
-#          label='Dmax: %.1f' % Dmax[5] + ' ' + '$\AA$')
-# plt.plot(PDDF_list[6],
-#          label='Dmax: %.1f' % Dmax[6] + ' ' + '$\AA$')
-# plt.plot(PDDF_list[7],
-#          label='Dmax: %.1f' % Dmax[7] + ' ' + '$\AA$')
-# plt.plot(PDDF_list[8],
-#          label='Dmax: %.1f' % Dmax[8] + ' ' + '$\AA$')
-# plt.plot(PDDF_list[9],
-#          label='Dmax: %.1f' % Dmax[9] + ' ' + '$\AA$')
+
+'''
+It is very hard to tell what the best choice of Dmax is from this plot. How could we offset the plots given each array consists of 99 points?
+'''
+
+# plt.plot(PDDF_list[YYY],
+#          label='Dmax: %s' % Dmax[YYY] + ' ' + '$\AA$')
+# plt.plot(PDDF_list[YYY],
+#          label='Dmax: %.1f' % Dmax[YYY] + ' ' + '$\AA$')
+# plt.plot(PDDF_list[YYY],
+#          label='Dmax: %.1f' % Dmax[YYY] + ' ' + '$\AA$')
+# plt.plot(PDDF_list[YYY],
+#          label='Dmax: %.1f' % Dmax[YYY] + ' ' + '$\AA$')
+# plt.plot(PDDF_list[YYY],
+#          label='Dmax: %.1f' % Dmax[YYY] + ' ' + '$\AA$')
+# plt.plot(PDDF_list[YYY],
+#          label='Dmax: %.1f' % Dmax[YYY] + ' ' + '$\AA$')
+# plt.plot(PDDF_list[YYY],
+#          label='Dmax: %.1f' % Dmax[YYY] + ' ' + '$\AA$')
+# plt.plot(PDDF_list[YYY],
+#          label='Dmax: %.1f' % Dmax[YYY] + ' ' + '$\AA$')
+# plt.plot(PDDF_list[YYY],
+#          label='Dmax: %.1f' % Dmax[YYY] + ' ' + '$\AA$')
+# plt.plot(PDDF_list[YYY],
+#          label='Dmax: %.1f' % Dmax[YYY] + ' ' + '$\AA$')
 # plt.legend(loc='best')
 # plt.ylim(bottom=0,top=1.09)
 # plt.xlim(-5,145)
 # plt.ylabel('P(r)',size=14)
 # plt.xlabel('No. of Points',size=14)
-# # plt.ylim(bottom=0,top=4000000)
 # plt.savefig('VariableDmax_PDDF2.png',bbox_inches='tight',dpi=300,
 #             format='png')
 # plt.show()
-#
-# '''
-# How to export data? What if a collaborator wants only a data frame from your analysis, not the entire script and repository?
-# '''
-# r0,Pr0 = np.linspace(0,Dmax[0] * 1.4,n),PDDF_list[0]
-# entryCount = 0
-#
+
+'''
+How to export data? What if a collaborator wants only a data frame from your analysis, not the entire script and repository?
+'''
+
+# r0,Pr0 = np.linspace(0,Dmax[YYY] * 1.4,n),PDDF_list[YYY] # Lets just export the first entry
+
+# entryCount = YYY
 # with open('example_export.csv','w',newline='') as csvfile:
 #     fieldnames = ['Index','r0(A)','P(r)']
-#     thewriter = csv.DictWriter(csvfile,fieldnames=fieldnames)
+#     thewriter = csv.DictWriter(csvfile,fieldnames=YYY)
 #     thewriter.writeheader()
-#     for i in range(len(r0)):
+#     n=len(YYY)
+#     for i in range(YYY):
 #         entryCount += 1
-#         thewriter.writerow({'Index':entryCount,'r0(A)':r0[i],'P(r)':Pr0[i]})
-#
-# '''
-# Can you write a loop that exports all of the r/P(r) data?
-# '''
+#         thewriter.writerow({'Index':entryCount,'r0(A)':r0[YYY],'P(r)':Pr0[YYY]})
+
+
+'''
+Can you write a loop that exports all of the r/P(r) data?
+'''
