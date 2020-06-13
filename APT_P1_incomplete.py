@@ -34,7 +34,7 @@ Start with importing packages:
 
 import numpy as np  # this is a math package
 from scipy.optimize import curve_fit as cf
-from PlotClass_incomplete import *
+# from PlotClass_incomplete import * # you can change the name of your plot class!
 from matplotlib import pyplot as plt
 import csv
 import warnings
