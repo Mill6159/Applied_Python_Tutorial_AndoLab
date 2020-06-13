@@ -298,17 +298,19 @@ Pair distance distribution calculation:
     (1) We will define a new function for this "PDDF":
         (a) I left the potential capability to add other shape profiles
         where you will have to deal with properly interpolating q onto I(q)
+        
 '''
 
 
 # def PDDF(shape,Dmax,I,q):
 #     """plot pair distance distribution"""
 #     # reference:"Svergen&Koch,Rep.Phys.Prog 66(2003) 1735-82
+#
 #     r_range = np.arange(0,Dmax * 1.4,Dmax / 50)
 #     if shape == "FoxS":
 #         if q[0] == 0:
-#             q = q[1:]
-#             I = I[1:]
+#             q = q[YYY] # How do we cutoff only this first point?
+#             I = I[YYY]
 #             # Taking the first point in exp_q out if it's 0, avoiding dividing by 0 problem
 #         else:
 #             q = q
@@ -346,10 +348,10 @@ Or...
 (2) Hack our way out of it. Both are good to know how to do.
 '''
 
-# nanCount = np.isnan(Pr).sum()
+# nanCount = np.isnan(YYY).sum()
 # print('# of nan values: %s' % nanCount)
 # Pr = Pr[np.logical_not(np.isnan(Pr))]
-# r = r[YYY:]  # cutoff all points that were nan in Pr dataframe (vectors must be of equal length)
+# r = r[YYY:]  # cutoff all points that were nan in Pr and r(A) dataframe (vectors must be of equal length)
 
 '''
 Normalizing the Signal
@@ -364,34 +366,38 @@ Extra credit: Write a function that normalizes integral from rmin-rmax to 1
 #     sig = np.absolute(sig)
 #     maxY = max(sig)
 #     minY = min(sig)
-#     if np.isnan(minY):
-#         minY = 0
-#     Ynew = np.empty(n)
+#     if np.isnan(YYY):
+#         YYY = 0
+#     Ynew = np.empty(YYY)
 #     for i in range(len(sig)):
 #         Ynew[i] = (sig[i] - minY) / (maxY - minY)
 #     return Ynew
 
 
-# Pr_norm = quickNormalize(Pr)  # recall we are overwritng the previous Pr value
-
+# Pr_norm = quickNormalize(YYY) # Let's create a new Pr object (Pr_norm) but remember, the more objects the more memory.
 
 
 '''
 Note: Here we are adding a baseline(Y2) to improve the visualization
 How can we write that?
+Hint: How can you create a list of a single value repeated n times? where n = len(Pr_norm).
+baseline = Y2
 '''
 
 
-# visuals.twoPlot(X=r,Y1=Pr_norm,Y2=[0] * len(Pr_norm),savelabel='Example_Pr',plotlabel1='Pair Distance Distribution',
+# visuals.twoPlot(X=r,Y1=Pr_norm,Y2=YYY,savelabel='Example_Pr',plotlabel1='Pair Distance Distribution',
 #                 plotlabel2='Baseline',
 #                 xlabel='r($\AA$)',ylabel='P(r)',linewidth=4)
 #
+
+
 '''
 How can we approximate Dmax?
     (1) Iterate over the PDDF function
     (2) Save to memory the value of Dmax that gives P(rmin) & P(rmax) = 0
 
 First we will modify the PDDF function (PDDF_2) slightly to make our lives easier
+Note: You need only make the same fixes as the previous PDDDF function, everything else I provided.
 '''
 
 
@@ -401,8 +407,8 @@ First we will modify the PDDF function (PDDF_2) slightly to make our lives easie
 #     r_range = np.linspace(0,Dmax * 1.4,100)
 #     if shape == "FoxS":
 #         if q[0] == 0:
-#             q = q[1:]
-#             I = I[1:]
+#             q = q[YYY]
+#             I = I[YYY]
 #             # Taking the first point in exp_q out if it's 0, avoiding dividing by 0 problem
 #         else:
 #             q = q
@@ -423,45 +429,46 @@ First we will modify the PDDF function (PDDF_2) slightly to make our lives easie
 #     r = r_range[nanCount:]
 #
 #     return P_r
-#
-#
-# ## Set parameters for iterations of PDDF
+
+
+## Set parameters for iterations of PDDF
+
 # interval = 10  # sets number of iterations
 # dmin,dmax = 45,85
-# Dmax = np.linspace(dmin,dmax,interval)
+# Dmax = np.linspace(dmin,dmax,YYY) # https://numpy.org/devdocs/reference/generated/numpy.linspace.html, check this source to fill in YYY
+
 # print('Final Dmax Value in the Dmax list: %s' % Dmax[9])
-# n = len(PDDF_2(shape='FoxS',Dmax=Dmax[0],I=data['I(q)'],q=data['q']))
-#
-# PDDF_list = np.empty(shape=((interval),n))  # PDDF_list=np.empty(shape=((interval),n)) #
-#
-# # i=9
-# # while i<9:
-# # Prtest[i],r[i]=PDDF(shape='FoxS',Dmax=Dmax[i],I=data['I(q)'],q=data['q'])
-# #    i+=1
-# # test=[[np.empty(len(Pr))],[np.empty(70)]]
-#
-# '''
-# Need the length of each data set extracted from PDDF
-# should be 99 everytime..
-# '''
-#
+
+# n = len(PDDF_2(shape='FoxS',Dmax=Dmax[0],I=data['I(q)'],q=data['q'])) # necessary for building our array, BUT how could we automate this rather than set the number of points?
+
+# PDDF_list = np.empty(shape=((interval),n)) # we need to build the array so we can drop values into it as we iterate.
+# # Extra Credit: How to automated for different length inputs?!
+
+
+'''
+Need the length of each data set extracted from PDDF
+should be 99 everytime..
+'''
+
+
+
 # for i in PDDF_list:
-#     for i in range(0,(interval)):
-#         PDDF_list[i] = (PDDF_2(shape='FoxS',Dmax=Dmax[i],I=data['I(q)'],q=data['q']))
+#     for YYY in range(0,(YYY)):
+#         PDDF_list[YYY] = (PDDF_2(shape='FoxS',Dmax=Dmax[i],I=data['I(q)'],q=data['q']))
 #
-# for i in range(len(PDDF_list)):
-#     PDDF_list[i] = quickNormalize(PDDF_list[i])
-#
-# '''
-# Quick example of how to 'toss' together a plot when it is necessary to do so quickly
-# or it isn't worth the effort (for some reason) to make the plots publication quality
-#
-# *** Matplotlib will allow us to stack as many as we want!
-#
-# (1) Overlaid with the proper r_range
-# (2) Plotted as a function of the number of points (fixed, 99 for every profile) for better visualization
-# '''
-#
+# for YYY in range(len(PDDF_list)):
+#     PDDF_list[YYY] = quickNormalize(PDDF_list[YYY])
+
+'''
+Quick example of how to 'toss' together a plot when it is necessary to do so quickly
+or it isn't worth the effort (for some reason) to make the plots publication quality
+
+*** Matplotlib will allow us to stack as many as we want!
+
+(1) Overlaid with the proper r_range
+(2) Plotted as a function of the number of points (fixed, 99 for every profile) for better visualization
+'''
+
 # plt.plot(np.linspace(0,Dmax[0] * 1.4,n),PDDF_list[0],
 #          label='Dmax: %.1f' % Dmax[0] + ' ' + '$\AA$')
 # plt.plot(np.linspace(0,Dmax[1] * 1.4,n),PDDF_list[1],
