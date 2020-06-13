@@ -24,7 +24,11 @@ A theoritical scattering curve was determined from the crystal structure, PDBID=
 From this theoritical profile, we will learn how to:  
 (1) Import data  
 (2) Import modules/classes  
-(3) 
+(3) Define functions/objects
+(4) Review conditionals and loops
+(5) Perform least squares minimization and Guiner analysis
+(6) Calculate a pair-distance distribution function
+(7) Exporting data & so much more! 
 
 **Details of the backend of the code:**
 
