@@ -39,7 +39,7 @@ from matplotlib import pyplot as plt
 import csv
 import warnings
 
-# warnings.filterwarnings("ignore",category=RuntimeWarning)  # deals with dividing through by zero but be careful!!
+warnings.filterwarnings("ignore",category=RuntimeWarning)  # deals with dividing through by zero but be careful!!
 
 '''
 Import FoxS Data: I generated this for us from the crystal structure PDBID: 6MT9
