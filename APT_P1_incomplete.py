@@ -81,8 +81,6 @@ How can we access the data?
 #        line = next(YYY).strip()
 #        print(YYY)
 
-## Mention stack exchange
-
 
 '''
 But... we used a convenient python module 'numpy' to open the file
@@ -90,7 +88,7 @@ So life is even easier but we may have lost information..
 Observe
 '''
 
-# print('First 10 rows of the dataframe (No column labels): ',data[0:10])
+# print('First 10 rows of the dataframe (No column labels): ',data[YYY])
 
 '''
 We have lost the header information, beware! If you are doing more advanced data processing and require
@@ -99,7 +97,7 @@ than the simple import we are using.
 But.. There are some benefits. We can now access each column by its 'name'
 '''
 
-# print('The first 5 I(q) points: ',data['I(q)'][0:5])
+# print('The first 5 I(q) points: ',data['I(q)'][YYY])
 
 '''
 Now before we do any analysis, we need to define a few functions:
