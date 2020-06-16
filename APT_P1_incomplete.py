@@ -2,14 +2,12 @@
 # -*- coding: utf-8 -*-
 """
 Created on Wed Jun  3 17:32:11 2020
-
 @author: Rob
 """
 
 '''
 We will build a script that imports FoxS generated SAXS profile from
 a crystal structure and does some analysis. PDBID: XXXX. Familiar?
-
 Learning Objectives:
     (1) How to load in modules (& install them if necessary):
         (a) pip or conda
@@ -20,7 +18,7 @@ Learning Objectives:
     (6) Basic function building/analysis - Least squares minimization (LSM)
     (7) Pair distance distribution function
     (8) Data export
-    
+
 Where you see "YYY" you need to add input!
 '''
 
@@ -53,7 +51,6 @@ Import FoxS Data: I generated this for us from the crystal structure PDBID: 6MT9
 How can we access the data?
 #1 - the 'head' of the data(i.e. first 5 lines)?
 '''
-
 
 # N = 5 # How many lines do we want to look at?
 # # Method 1:
@@ -103,13 +100,11 @@ But.. There are some benefits. We can now access each column by its 'name'
 Now before we do any analysis, we need to define a few functions:
     (1) A basic linear model function. We will pass this function into a module function for least squares minimization
     (2) We will define our own function for least squares regression
-
 First we will start with a basic linear model with a slope and an intercept
 '''
 
 print('-------------------------------------------------------------------------------')
 print('')
-
 
 # def lineModel(x,m,b):
 #     return m * x + b
@@ -118,7 +113,6 @@ print('')
 '''
 Now our function that will both fit the data and extract the coefficients/error (LSM)
 '''
-
 
 # def lsq_w_sigma(X,Y,SIG):
 #     """ This is a special version of linear least squares that uses
@@ -147,7 +141,6 @@ Now our function that will both fit the data and extract the coefficients/error 
 Recall, the ultimate goal is to perform a Guiner analysis of the theoritical scattering curve
 Guiner approximation: ln(I(q)) = m*x+b
 where the slope(m)=sqrt(-3b), x = q^2, & the intercept(b)=I(0)
-
 We will use scipy and the lineModel to determine Rg & compare the results to our 'homebaked' function
 For this tutorial, we will not discuss automated methods for determining the optimal q-range
 Instead I will provide it (nmin,nmax): (0,120)
@@ -160,7 +153,6 @@ nmax = 34
 '''
 Note, LSM algorithms can take input "guesses"(g) as a starting point for minimization
 The package curve_fit from scipy will output coefficients (c) and covariance (cov) matrices separately
-
 Nuisance points:
     (1) Several data transformations will be performed:
         (a) Transformation of the signal errors in to log-space
@@ -192,13 +184,10 @@ Perform the analysis with our "homebaked" function
 '''
 We will create a dictionary of all of the useful data values
 & review how convenient dictionaries are
-
 Extract the following information:
     (1) Rg/Relative Error in Rg
     (2) qminRg,qmaxRg (acceptable Guiner region verification)
     (3) Comparison of the two results
-
-
 Note: We need to convert our results in order to determine Rg and the relative error in Rg
 For references:
     (1) https://github.com/Mill6159/SAXSProf_Desktop_GUI/blob/master/Analytical_Derivation_Final.pdf
@@ -246,7 +235,6 @@ greater than 1%
 Stop!
 We need to build a plot class, that you can save and use later, that will generate some beautiful plots for us
 Name the file: PlotClass.py
-
 Now we can use our beautiful plot class to generate a few plots to visualize our data
 '''
 
@@ -279,7 +267,6 @@ Look at the model in reciprocal space (rather than log reciprocal space)
 How to convert back?
 '''
 
-
 # def gaussianGuiner(X,I0,Rg):
 #     return I0 * np.exp(-(1 / 3) * (X ** 2) * (Rg ** 2))
 
@@ -300,9 +287,8 @@ Pair distance distribution calculation:
     (1) We will define a new function for this "PDDF":
         (a) I left the potential capability to add other shape profiles
         where you will have to deal with properly interpolating q onto I(q)
-        
-'''
 
+'''
 
 # def PDDF(shape,Dmax,I,q):
 #     """plot pair distance distribution"""
@@ -344,9 +330,7 @@ Pair distance distribution calculation:
 
 '''
 Oh no, there is an nan value generated.. Why so? We can (1) fix the code
-
 Or...
-
 (2) Hack our way out of it. Both are good to know how to do.
 '''
 
@@ -361,7 +345,6 @@ Basic function for normalizing a signal between 0-1 - Note we could bake this in
 Extra credit: Write a function that normalizes integral from rmin-rmax to 1
     Hint: try numpy.trapz()
 '''
-
 
 # def quickNormalize(sig):
 #     n = len(sig)
@@ -386,7 +369,6 @@ Hint: How can you create a list of a single value repeated n times? where n = le
 baseline = Y2
 '''
 
-
 # visuals.twoPlot(X=r,Y1=Pr_norm,Y2=YYY,savelabel='Example_Pr',plotlabel1='Pair Distance Distribution',
 #                 plotlabel2='Baseline',
 #                 xlabel='r($\AA$)',ylabel='P(r)',linewidth=4)
@@ -397,11 +379,9 @@ baseline = Y2
 How can we approximate Dmax?
     (1) Iterate over the PDDF function
     (2) Save to memory the value of Dmax that gives P(rmin) & P(rmax) = 0
-
 First we will modify the PDDF function (PDDF_2) slightly to make our lives easier
 Note: You need only make the same fixes as the previous PDDDF function, everything else I provided.
 '''
-
 
 # def PDDF_2(shape,Dmax,I,q):  # set a fixed length of r values
 #     """plot pair distance distribution"""  # this will make things a lot easier to deal with downstream
@@ -452,7 +432,6 @@ Need the length of each data set extracted from PDDF
 should be 99 everytime..
 '''
 
-
 # for i in PDDF_list:
 #     for YYY in range(0,(YYY)):
 #         PDDF_list[YYY] = (PDDF_2(shape='FoxS',Dmax=Dmax[i],I=data['I(q)'],q=data['q']))
@@ -463,9 +442,7 @@ should be 99 everytime..
 '''
 Quick example of how to 'toss' together a plot when it is necessary to do so quickly
 or it isn't worth the effort (for some reason) to make the plots publication quality
-
 *** Matplotlib will allow us to stack as many as we want!
-
 (1) Overlaid with the proper r_range
 (2) Plotted as a function of the number of points (fixed, 99 for every profile) for better visualization
 '''

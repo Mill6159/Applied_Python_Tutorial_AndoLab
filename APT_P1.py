@@ -385,7 +385,7 @@ visuals.twoPlot(X=r,Y1=Pr_norm,Y2=[0]*len(Pr_norm),savelabel='Example_Pr',plotla
 
 '''
 How can we approximate Dmax?
-    (1) Iterate over the PDDF function
+    (1) Iterateover the PDDF function
     (2) Save to memory the value of Dmax that gives P(rmin) & P(rmax) = 0
     
 First we will modify the PDDF function (PDDF_2) slightly to make our lives easier
