@@ -7,7 +7,7 @@ Created on Wed Jun  3 17:32:11 2020
 
 '''
 We will build a script that imports FoxS generated SAXS profile from
-a crystal structure and does some analysis. PDBID: XXXX. Familiar?
+a crystal structure and does some analysis. PDBID: 6MT9. Familiar?
 Learning Objectives:
     (1) How to load in modules (& install them if necessary):
         (a) pip or conda
