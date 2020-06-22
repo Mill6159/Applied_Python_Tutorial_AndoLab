@@ -43,8 +43,8 @@ warnings.filterwarnings("ignore",category=RuntimeWarning)  # deals with dividing
 Import FoxS Data: I generated this for us from the crystal structure PDBID: 6MT9
 '''
 
-# data = np.loadtxt('YYY',
-#                   dtype={'names':('q','I(q)','I(q)_Error'),'formats':(YYY,YYY,YYY)},
+# data = np.loadtxt('YYY',# https://numpy.org/doc/stable/reference/generated/numpy.loadtxt.html
+#                   dtype={'names':('q','I(q)','I(q)_Error'),'formats':(YYY,YYY,YYY)}, # float vs int?
 #                   comments='#')
 
 '''
