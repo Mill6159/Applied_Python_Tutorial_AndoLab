@@ -239,7 +239,10 @@ Name the file: PlotClass.py
 Now we can use our beautiful plot class to generate a few plots to visualize our data
 '''
 
-# ##### End lecture 1 #####
+#########################
+##### End lecture 1 #####
+#########################
+
 
 # visuals = PlotClass()  # assign class to an object. The object will now have all characteristics of the class (def __init__(self):)
 
