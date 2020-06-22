@@ -172,14 +172,14 @@ Nuisance points:
 '''
 Perform the analysis with our "homebaked" function
 '''
-# hb_slope,hb_inter,hb_sigslope,hb_siginter = lsq_w_sigma(data['q'][nmin:nmax] ** 2,
-#                                                         np.log(data['I(q)'][nmin:nmax]),
-#                                                         data['I(q)_Error'][nmin:nmax] / data['I(q)'][nmin:nmax])
-# hbI0 = np.exp(hb_inter)
-# hbRg = np.sqrt(-3 * hb_slope)
-# hbRg_relErr = np.absolute(hb_sigslope / hb_slope)
-# hb_qminRg = hbRg * data['q'][nmin]
-# hb_qmaxRg = hbRg * data['q'][nmax]
+# hb_slope,hb_inter,hb_sigslope,hb_siginter = lsq_w_sigma(data['q'][YYY:YYY] ** 2,
+#                                                         np.log(data['I(q)'][YYY:YYY]),
+#                                                         data['I(q)_Error'][YYY:YYY] / data['I(q)'][YYY:YYY])
+# hbI0 = np.exp(YYY)
+# hbRg = np.sqrt(-3 * YYY)
+# hbRg_relErr = np.absolute(YYY / YYY)
+# hb_qminRg = hbRg * data['q'][YYY]
+# hb_qmaxRg = hbRg * data['q'][YYY]
 
 '''
 We will create a dictionary of all of the useful data values
@@ -193,6 +193,7 @@ For references:
     (1) https://github.com/Mill6159/SAXSProf_Desktop_GUI/blob/master/Analytical_Derivation_Final.pdf
     (2) Numerical Recipes: Press, William H., et al. Numerical recipes 3rd edition: The art of scientific computing. Cambridge university press, 2007.
 '''
+
 # scipy_dict = {'scipy_qminRg':scipy_qminRg,'scipy_qmaxRg':scipy_qmaxRg,
 #               'scipyRg':scipyRg,'scipyRg_relErr':scipyRg_relErr}
 
