@@ -225,10 +225,10 @@ Generate an automated output to "warn" us if the relative error is
 greater than 1%
 '''
 
-# if (100 * hb_dict['hbRg_relErr']) > 1.0:
+# YYY (100 * hb_dict['hbRg_relErr']) > 1.0:
 #     print('Percent relative error in Rg is greater than 1%:' + ' ' + '%.2f' % (100 * hb_dict['hbRg_relErr']) + '%')
 #     print('Review quality of fit')
-# else:
+# YYY:
 #     print('Percent relative error in Rg is less than 1%:' + ' ' + '%.2f' % (100 * hb_dict['hbRg_relErr']) + '%')
 #     print(' ')
 
