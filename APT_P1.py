@@ -480,6 +480,8 @@ plt.plot(np.linspace(0,Dmax[8]*1.4,n),PDDF_list[8],
          label='Dmax: %.1f'%Dmax[8] + ' ' + '$\AA$')
 plt.plot(np.linspace(0,Dmax[9]*1.4,n),PDDF_list[9],
          label='Dmax: %.1f'%Dmax[9] + ' ' + '$\AA$')
+plt.ylabel('P(r)',size=14)
+plt.xlabel('r ($\\AA$)',size=14)
 plt.legend(loc='best')
 plt.ylim(bottom=0,top=1.09)
 #plt.xlim(-5,90)

@@ -474,6 +474,8 @@ or it isn't worth the effort (for some reason) to make the plots publication qua
 #          label='Dmax: %.1f' % Dmax[YYY] + ' ' + '$\AA$')
 # plt.plot(np.linspace(0,Dmax[YYY] * 1.4,n),PDDF_list[YYY],
 #          label='Dmax: %.1f' % Dmax[YYY] + ' ' + '$\AA$')
+# plt.ylabel('P(r)',size=14)
+# plt.xlabel('r ($\\AA$)',size=14)
 # plt.legend(loc='best')
 # # manually set x and y limits?
 # plt.savefig('VariableDmax_PDDF.png',bbox_inches='tight',dpi=300,
