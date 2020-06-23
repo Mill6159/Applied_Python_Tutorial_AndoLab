@@ -25,9 +25,9 @@ Where you see "YYY" you need to add input!
 '''
 Start with importing packages:
     (1) numpy: basic data structure manipulation, mathematics, etc
-    (2) matplotlib: Plot module (PlotClass)
+    (2) matplotlib: Plot module 
     (3) scipy: Great data science module
-    (4) Our own class!
+    (4) Our own class! (PlotClass)
 '''
 
 import numpy as np  # this is a math package
@@ -52,8 +52,8 @@ How can we access the data?
 #1 - the 'head' of the data(i.e. first 5 lines)?
 '''
 
+'''Method 1:'''
 # N = 5 # How many lines do we want to look at?
-# # Method 1:
 # filename = '6mt9.pdb.dat'
 # with open(filename,mode="r") as f:  # important to use 'with' command when dealing with files
 #     counter = YYY
@@ -63,7 +63,8 @@ How can we access the data?
 #         counter += 1
 #         if counter == N: break
 
-# # Method 2:
+'''Method 2:'''
+
 # with open(filename,"r") as f:
 #     print('File: %s' % filename)
 #     for i in range(N):
@@ -98,8 +99,8 @@ But.. There are some benefits. We can now access each column by its 'name'
 
 '''
 Now before we do any analysis, we need to define a few functions:
-    (1) A basic linear model function. We will pass this function into a module function for least squares minimization
-    (2) We will define our own function for least squares regression
+    (1) A basic linear model function. We will pass this function into a scipy function for least squares minimization
+    (2) We will define our own function for least squares minimization
 First we will start with a basic linear model with a slope and an intercept
 '''
 
@@ -140,28 +141,28 @@ Now our function that will both fit the data and extract the coefficients/error 
 '''
 Recall, the ultimate goal is to perform a Guiner analysis of the theoritical scattering curve
 Guiner approximation: ln(I(q)) = m*x+b
-where the slope(m)=sqrt(-3b), x = q^2, & the intercept(b)=I(0)
+where the -slope(m)=sqrt(3*Rg), x = q^2, & the intercept(b)=I(q=0)
 We will use scipy and the lineModel to determine Rg & compare the results to our 'homebaked' function
 For this tutorial, we will not discuss automated methods for determining the optimal q-range
-Instead I will provide it (nmin,nmax): (0,120)
-Recall, ideally, ~(qmin,qmax): (0.3,1.3) but this is empirically determined (i.e. a suggestion more than a rule).
+Instead I will provide it (nmin,nmax): (8,34)
+Recall, ideally, ~(qmin*Rg,qmax*Rg): (0.3,1.3) but this is empirically determined (i.e. a suggestion more than a rule).
 '''
 
 nmin = 8
 nmax = 34
 
 '''
-Note, LSM algorithms can take input "guesses"(g) as a starting point for minimization
+Note, LSM algorithms can take input "guesses" (g) as a starting point for minimization
 The package curve_fit from scipy will output coefficients (c) and covariance (cov) matrices separately
 Nuisance points:
     (1) Several data transformations will be performed:
         (a) Transformation of the signal errors in to log-space
         (b) Transformation of the slope to calculate Rg and the error, transforming back out of log space
 '''
-# g = [-40,10]  # slope, intercept
+# g = [-40,10]  # slope, intercept. Our guesses!
 #
-# c,cov = cf(lineModel,YYY(X-axis),YYY,g,
-#            sigma=data['I(q)_Error'][nmin:nmax] / data['I(q)'][nmin:nmax])
+# c,cov = cf(lineModel,YYY(X-axis),YYY,g, # remember we abbreviated curve_fit as cf
+#            sigma=data['I(q)_Error'][nmin:nmax] / data['I(q)'][nmin:nmax]) # https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.curve_fit.html
 #
 # scipyI0 = np.exp(c[YYY])
 # scipyRg = np.sqrt(-3 * c[YYY])
@@ -183,12 +184,13 @@ Perform the analysis with our "homebaked" function
 
 '''
 We will create a dictionary of all of the useful data values
-& review how convenient dictionaries are
+& review how convenient dictionaries are.
+
 Extract the following information:
     (1) Rg/Relative Error in Rg
     (2) qminRg,qmaxRg (acceptable Guiner region verification)
-    (3) Comparison of the two results
-Note: We need to convert our results in order to determine Rg and the relative error in Rg
+    (3) Comparison of the two results (scipy vs 'homebaked function')
+Note: We need to convert our results in order to determine Rg and the relative error in Rg (performed above)
 For references:
     (1) https://github.com/Mill6159/SAXSProf_Desktop_GUI/blob/master/Analytical_Derivation_Final.pdf
     (2) Numerical Recipes: Press, William H., et al. Numerical recipes 3rd edition: The art of scientific computing. Cambridge university press, 2007.
@@ -223,6 +225,7 @@ Example of how to clean up the output a bit
 '''
 Generate an automated output to "warn" us if the relative error is
 greater than 1%
+hint: we need a conditional statement here!
 '''
 
 # YYY (100 * hb_dict['hbRg_relErr']) > 1.0:
@@ -235,7 +238,7 @@ greater than 1%
 '''
 Stop!
 We need to build a plot class, that you can save and use later, that will generate some beautiful plots for us
-Name the file: PlotClass.py
+Name the file: PlotClass.py (currently it is saved as PlostClass_incomplete.py, which you can keep it as if you wish, but watch how you import the class!)
 Now we can use our beautiful plot class to generate a few plots to visualize our data
 '''
 
