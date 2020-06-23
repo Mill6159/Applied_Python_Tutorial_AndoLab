@@ -450,6 +450,17 @@ for i in range(len(PDDF_list)):
     PDDF_list[i]=quickNormalize(PDDF_list[i])
 
 
+# testP = np.empty(shape=(interval),order='F')
+# testR = np.empty(shape=(interval),order='F')
+# testP=np.empty((interval,0)).tolist()
+# testR=np.empty((interval,0)).tolist()
+# print(len(testP))
+# for j in range(0,interval):
+#     testP,testR = (PDDF(shape='FoxS',Dmax=Dmax[j],I=data['I(q)'],q=data['q']))
+#
+# print(testP[:,0])
+
+
 '''
 Quick example of how to 'toss' together a plot when it is necessary to do so quickly
 or it isn't worth the effort (for some reason) to make the plots publication quality
