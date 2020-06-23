@@ -329,6 +329,11 @@ Pair distance distribution calculation:
 
 # Pr,r = PDDF(shape='FoxS',Dmax=80,I=data['I(q)'],q=data['q'])
 
+'''
+Did we generate any non-sense, like nan values? If so, we'd like to know. We'd also like to know what value in our
+data object is troublesome. The below conditional statement will help us sort that out! 
+'''
+
 # for entry in Pr:
 #     if np.isnan(YYY) == True:
 #         print("Uh oh, we've generated an nan value")
@@ -339,6 +344,8 @@ Pair distance distribution calculation:
 Oh no, there is an nan value generated.. Why so? We can (1) fix the code
 Or...
 (2) Hack our way out of it. Both are good to know how to do.
+
+Below, we'll strip away an nan values and ensure our P(r) and r vectors are still of equal length.
 '''
 
 # nanCount = np.isnan(YYY).sum()
@@ -350,7 +357,7 @@ Or...
 Normalizing the Signal
 Basic function for normalizing a signal between 0-1 - Note we could bake this into PDDF
 Extra credit: Write a function that normalizes integral from rmin-rmax to 1
-    Hint: try numpy.trapz()
+Hint: try numpy.trapz()
 '''
 
 # def quickNormalize(sig):
@@ -385,9 +392,12 @@ baseline = Y2
 '''
 How can we approximate Dmax?
     (1) Iterate over the PDDF function
-    (2) Save to memory the value of Dmax that gives P(rmin) & P(rmax) = 0
-First we will modify the PDDF function (PDDF_2) slightly to make our lives easier
-Note: You need only make the same fixes as the previous PDDDF function, everything else I provided.
+    (2) Save to memory the value of Dmax that gives P(rmin) & P(rmax) = 0 (Extra credit)
+    OR check visually!
+First we will modify the PDDF function (call it PDDF_2) slightly to make our lives easier
+Note: 
+(1) You need only make the same fixes as the previous PDDF function, everything else I provided.
+(2) In reality, we certainly could of used the original PDDF function and dealt with multiple outputs
 '''
 
 # def PDDF_2(shape,Dmax,I,q):  # set a fixed length of r values
@@ -423,30 +433,47 @@ Note: You need only make the same fixes as the previous PDDDF function, everythi
 ## Set parameters for iterations of PDDF
 
 # interval = 10  # sets number of iterations
-# dmin,dmax = 45,85
+# dmin,dmax = 45,85 # set the range of Dmax values to iterate over
 # Dmax = np.linspace(dmin,dmax,YYY) # https://numpy.org/devdocs/reference/generated/numpy.linspace.html, check this source to fill in YYY
 
-# print('Final Dmax Value in the Dmax list: %s' % Dmax[9])
+'''
+Recall, we are generating our r_range vector as is done in the PDDF function
+This makes writing the loop a bit easier and allows to focus on more important details for the tutorial
+BUT
+Extra credit: use the original PDDF function to write the below for loop and store both P(r) and r in memory.
+              Beware, vectors will not necessarily be off equal length!
+'''
+
+# print('Final Dmax Value in the Dmax list: %s' % Dmax[9]) # output to the terminal so the user knows the max Dmax we will try!
 
 # n = len(PDDF_2(shape='FoxS',Dmax=Dmax[0],I=data['I(q)'],q=data['q'])) # necessary for building our array, BUT how could we automate this rather than set the number of points?
 
 # PDDF_list = np.empty(shape=((interval),n)) # we need to build the array so we can drop values into it as we iterate.
-# # Extra Credit: How to automated for different length inputs?!
-
 
 '''
-Need the length of each data set extracted from PDDF
-should be 99 everytime..
+Extra Credit: How to automated for different length inputs?!
+
+Need the length of each data set extracted from PDDF_2
+should be 99 everytime.. (fixing the length made our life significantly easier!)
 '''
 
 # for i in PDDF_list:
 #     for YYY in range(0,(YYY)):
 #         PDDF_list[YYY] = (PDDF_2(shape='FoxS',Dmax=Dmax[i],I=data['I(q)'],q=data['q']))
-#
+
+'''
+Now, normalize each P(r) function between 0 and 1.
+'''
+
 # for YYY in range(len(PDDF_list)):
 #     PDDF_list[YYY] = quickNormalize(PDDF_list[YYY])
 
 '''
+We did it! But now we need to check what we've done..
+What if our plot class does not have a function that can handle an arbitrary number of inputs?
+We can toss together a quick matplotlib plot and make it fancier in the future if we reuse it! (see below)
+
+
 Quick example of how to 'toss' together a plot when it is necessary to do so quickly
 or it isn't worth the effort (for some reason) to make the plots publication quality
 *** Matplotlib will allow us to stack as many as we want!
@@ -533,5 +560,5 @@ How to export data? What if a collaborator wants only a data frame from your ana
 
 
 '''
-Can you write a loop that exports all of the r/P(r) data?
+Extra credit: Can you write a loop that exports all of the P(r)/r data?
 '''
