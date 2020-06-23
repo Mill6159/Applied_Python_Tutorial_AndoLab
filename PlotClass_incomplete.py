@@ -22,9 +22,10 @@ class PlotClass:
         self.lines = plt.rc('lines',markeredgewidth=2)
         self.font = plt.rc('font',**{'sans-serif':['Helvetica']})
 
-    def basicPlot(self,X,Y,plotlabel='',savelabel='',xlabel='',ylabel=''):
+    def basicPlot(self,X,Y,plotlabel='',savelabel='',xlabel='',ylabel='NOT PROVIDED'):
         '''
         As simple (& as beautiful) as it gets
+        I left the default arguments blank (ex: savelabel='') such that you can set your own default values you prefer!
         '''
         fig = plt.figure(figsize=(10,8))  # set figure dimensions
         ax1 = fig.add_subplot(1,1,1)  # allows us to build more complex plots

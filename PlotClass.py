@@ -30,7 +30,7 @@ class PlotClass:
         self.font=plt.rc('font',**{'sans-serif': ['Helvetica']})
         
         
-    def basicPlot(self,X,Y,plotlabel='',savelabel='',xlabel='',ylabel=''):
+    def basicPlot(self,X,Y,plotlabel='',savelabel='',xlabel='',ylabel='NOT PROVIDED'):
         '''
         As simple as it gets
         '''
