@@ -49,7 +49,8 @@ Import FoxS Data: I generated this for us from the crystal structure PDBID: 6MT9
 
 '''
 How can we access the data?
-#1 - the 'head' of the data(i.e. first 5 lines)?
+There are several ways we can do this using base Python:
+For purposes of time, try at least one method.
 '''
 
 '''Method 1:'''
