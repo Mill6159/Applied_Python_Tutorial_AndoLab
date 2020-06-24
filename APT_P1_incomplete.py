@@ -366,7 +366,7 @@ Hint: try numpy.trapz()
 #     sig = np.absolute(sig)
 #     maxY = np.nanmax(sig)
 #     minY = min(sig)
-#     if np.isnan(YYY):
+#     if np.isnan(YYY): # deals with the python defaulting the minimum to nan
 #         YYY = 0
 #     Ynew = np.empty(YYY)
 #     for i in range(len(sig)):

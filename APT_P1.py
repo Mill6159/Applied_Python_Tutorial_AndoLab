@@ -496,6 +496,24 @@ plt.show()
 
 
 '''
+Best approximation of Dmax?
+'''
+
+def dMax_Searcher(pddf):
+    tosort=[]
+    for i in pddf:
+        n=len(i)
+        tosort.append(i[n-1])
+    minVal = np.nanmin(tosort)
+    minIndex= tosort.index(minVal)
+
+    return minVal, minIndex
+
+dMaxVal, dMaxIndex = dMax_Searcher(PDDF_list)
+
+print('The most likely Dmax value is: %.2f'%Dmax[dMaxIndex] + ' ' + 'Angstroms')
+
+'''
 How to export data? What if a collaborator wants only a data frame from your analysis, not the entire script and repository?
 '''
 r0,Pr0=r_range[0],PDDF_list[0]
