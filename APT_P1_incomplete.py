@@ -363,7 +363,7 @@ Hint: try numpy.trapz()
 # def quickNormalize(sig):
 #     n = len(sig)
 #     sig = np.absolute(sig)
-#     maxY = max(sig)
+#     maxY = np.nanmax(sig)
 #     minY = min(sig)
 #     if np.isnan(YYY):
 #         YYY = 0
@@ -383,182 +383,134 @@ Hint: How can you create a list of a single value repeated n times? where n = le
 baseline = Y2
 '''
 
-# visuals.twoPlot(X=r,Y1=Pr_norm,Y2=YYY,savelabel='Example_Pr',plotlabel1='Pair Distance Distribution',
-#                 plotlabel2='Baseline',
-#                 xlabel='r($\AA$)',ylabel='P(r)',linewidth=4)
-#
+# visuals.twoPlot(X=YYY,Y1=Pr_norm,Y2=YYY,savelabel='Example_Pr',plotlabel1='Pair Distance Distribution',plotlabel2='Baseline',
+#                   xlabel='YYY',ylabel='P(r)',linewidth=4)
 
 
 '''
 How can we approximate Dmax?
-    (1) Iterate over the PDDF function
-    (2) Save to memory the value of Dmax that gives P(rmin) & P(rmax) = 0 (Extra credit)
-    OR check visually!
-First we will modify the PDDF function (call it PDDF_2) slightly to make our lives easier
-Note: 
-(1) You need only make the same fixes as the previous PDDF function, everything else I provided.
-(2) In reality, we certainly could of used the original PDDF function and dealt with multiple outputs
+    (1) Iterateover the PDDF function
+    (2) Save to memory the value of Dmax that gives P(rmin) & P(rmax) = 0
 '''
 
-# def PDDF_2(shape,Dmax,I,q):  # set a fixed length of r values
-#     """plot pair distance distribution"""  # this will make things a lot easier to deal with downstream
-#     # reference:"Svergen&Koch,Rep.Phys.Prog 66(2003) 1735-82
-#     r_range = np.linspace(0,Dmax * 1.4,100)
-#     if shape == "FoxS":
-#         if q[0] == 0:
-#             q = q[YYY]
-#             I = I[YYY]
-#             # Taking the first point in exp_q out if it's 0, avoiding dividing by 0 problem
-#         else:
-#             q = q
-#
-#     P_r = np.array([],dtype=float)
-#
-#     '''
-#     Can you think of a better, or different, way to write this loop?
-#     '''
-#
-#     for r in r_range:
-#         p_r = np.sum(q ** 2 * I * np.sin(q * r) / (q * r) * 0.02) * (r ** 2) / (2.0 * np.pi ** 2)
-#         P_r = np.append(P_r,p_r)
-#
-#     nanCount = np.isnan(P_r).sum()
-#     # print('# of nan values: %s'%nanCount)
-#     P_r = P_r[np.logical_not(np.isnan(P_r))]
-#     r = r_range[nanCount:]
-#
-#     return P_r
 
+'''Set parameters for iterations of PDDF'''
 
-## Set parameters for iterations of PDDF
-
-# interval = 10  # sets number of iterations
-# dmin,dmax = 45,85 # set the range of Dmax values to iterate over
-# Dmax = np.linspace(dmin,dmax,YYY) # https://numpy.org/devdocs/reference/generated/numpy.linspace.html, check this source to fill in YYY
+# interval=10 # sets number of iterations
+# dmin,dmax=45,85
+# Dmax=np.linspace(dmin,dmax,YYY)
+# print('Final Dmax Value in the Dmax list: %s'%Dmax[9])
 
 '''
-Recall, we are generating our r_range vector as is done in the PDDF function
-This makes writing the loop a bit easier and allows to focus on more important details for the tutorial
-BUT
-Extra credit: use the original PDDF function to write the below for loop and store both P(r) and r in memory.
-              Beware, vectors will not necessarily be off equal length!
+We need to create an empty array of n columns that we can append to throughout the iterations
 '''
 
-# print('Final Dmax Value in the Dmax list: %s' % Dmax[9]) # output to the terminal so the user knows the max Dmax we will try!
+# PDDF_list=np.empty((interval,0)).tolist()
+# r_range=np.empty((interval,0)).tolist()
 
-# n = len(PDDF_2(shape='FoxS',Dmax=Dmax[0],I=data['I(q)'],q=data['q'])) # necessary for building our array, BUT how could we automate this rather than set the number of points?
-
-# PDDF_list = np.empty(shape=((interval),n)) # we need to build the array so we can drop values into it as we iterate.
 
 '''
-Extra Credit: How to automated for different length inputs?!
-
-Need the length of each data set extracted from PDDF_2
-should be 99 everytime.. (fixing the length made our life significantly easier!)
+Now iterate over both the lists and append the output of PDDF() for each Dmax value
 '''
 
-# for i in PDDF_list:
-#     for YYY in range(0,(YYY)):
-#         PDDF_list[YYY] = (PDDF_2(shape='FoxS',Dmax=Dmax[i],I=data['I(q)'],q=data['q']))
+# for YYY in PDDF_list and r_range:
+#     YYY i in range(0,(interval)):
+#         PDDF_list[i],r_range[i] = (PDDF(shape='FoxS',Dmax=Dmax[YYY],I=data['I(q)'],q=data['q']))
 
 '''
-Now, normalize each P(r) function between 0 and 1.
+Normalize the PDDF signal between 0 and 1
 '''
 
-# for YYY in range(len(PDDF_list)):
-#     PDDF_list[YYY] = quickNormalize(PDDF_list[YYY])
+# for i in range(YYY):
+#     PDDF_list[YYY]=quickNormalize(PDDF_list[YYY])
 
 '''
-We did it! But now we need to check what we've done..
-What if our plot class does not have a function that can handle an arbitrary number of inputs?
-We can toss together a quick matplotlib plot and make it fancier in the future if we reuse it! (see below)
-
-
 Quick example of how to 'toss' together a plot when it is necessary to do so quickly
 or it isn't worth the effort (for some reason) to make the plots publication quality
+
 *** Matplotlib will allow us to stack as many as we want!
+
 (1) Overlaid with the proper r_range
 (2) Plotted as a function of the number of points (fixed, 99 for every profile) for better visualization
 '''
 
-# plt.plot(np.linspace(0,Dmax[YYY] * 1.4,n),PDDF_list[YYY],
-#          label='Dmax: %.1f' % Dmax[YYY] + ' ' + '$\AA$')
-# plt.plot(np.linspace(0,Dmax[YYY] * 1.4,n),PDDF_list[YYY],
-#          label='Dmax: %.1f' % Dmax[1] + ' ' + '$\AA$')
-# plt.plot(np.linspace(0,Dmax[YYY] * 1.4,n),PDDF_list[YYY],
-#          label='Dmax: %.1f' % Dmax[YYY] + ' ' + '$\AA$')
-# plt.plot(np.linspace(0,Dmax[YYY] * 1.4,n),PDDF_list[YYY],
-#          label='Dmax: %.1f' % Dmax[YYY] + ' ' + '$\AA$')
-# plt.plot(np.linspace(0,Dmax[YYY] * 1.4,n),PDDF_list[YYY],
-#          label='Dmax: %.1f' % Dmax[4] + ' ' + '$\AA$')
-# plt.plot(np.linspace(0,Dmax[YYY] * 1.4,n),PDDF_list[YYY],
-#          label='Dmax: %.1f' % Dmax[YYY] + ' ' + '$\AA$')
-# plt.plot(np.linspace(0,Dmax[YYY] * 1.4,n),PDDF_list[YYY],
-#          label='Dmax: %.1f' % Dmax[YYY] + ' ' + '$\AA$')
-# plt.plot(np.linspace(0,Dmax[YYY] * 1.4,n),PDDF_list[YYY],
-#          label='Dmax: %.1f' % Dmax[YYY] + ' ' + '$\AA$')
-# plt.plot(np.linspace(0,Dmax[YYY] * 1.4,n),PDDF_list[YYY],
-#          label='Dmax: %.1f' % Dmax[YYY] + ' ' + '$\AA$')
-# plt.plot(np.linspace(0,Dmax[YYY] * 1.4,n),PDDF_list[YYY],
-#          label='Dmax: %.1f' % Dmax[YYY] + ' ' + '$\AA$')
+# plt.plot(r_range[YYY],PDDF_list[YYY],
+#          label='Dmax: %.1f'%Dmax[YYY] + ' ' + '$\AA$')
+# plt.plot(r_range[YYY],PDDF_list[YYY],
+#          label='Dmax: %.1f'%Dmax[YYY] + ' ' + '$\AA$')
+# plt.plot(r_range[YYY],PDDF_list[YYY],
+#          label='Dmax: %.1f'%Dmax[YYY] + ' ' + '$\AA$')
+# plt.plot(r_range[YYY],PDDF_list[YYY],
+#          label='Dmax: %.1f'%Dmax[YYY] + ' ' + '$\AA$')
+# plt.plot(r_range[YYY],PDDF_list[YYY],
+#          label='Dmax: %.1f'%Dmax[YYY] + ' ' + '$\AA$')
+# plt.plot(r_range[YYY],PDDF_list[YYY],
+#          label='Dmax: %.1f'%Dmax[YYY] + ' ' + '$\AA$')
+# plt.plot(r_range[YYY],PDDF_list[YYY],
+#          label='Dmax: %.1f'%Dmax[YYY] + ' ' + '$\AA$')
+# plt.plot(r_range[YYY],PDDF_list[YYY],
+#          label='Dmax: %.1f'%Dmax[YYY] + ' ' + '$\AA$')
+# plt.plot(r_range[YYY],PDDF_list[YYY],
+#          label='Dmax: %.1f'%Dmax[YYY] + ' ' + '$\AA$')
+# plt.plot(r_range[YYY],PDDF_list[YYY],
+#          label='Dmax: %.1f'%Dmax[YYY] + ' ' + '$\AA$')
 # plt.ylabel('P(r)',size=14)
-# plt.xlabel('r ($\\AA$)',size=14)
+# plt.xlabel('r ($YYY$)',size=14)
 # plt.legend(loc='best')
-# # manually set x and y limits?
+# plt.ylim(bottom=0,top=1.09)
+# #plt.xlim(-5,90)
 # plt.savefig('VariableDmax_PDDF.png',bbox_inches='tight',dpi=300,
 #             format='png')
 # plt.show()
 
-'''
-It is very hard to tell what the best choice of Dmax is from this plot. How could we offset the plots given each array consists of 99 points?
-'''
+
 
 # plt.plot(PDDF_list[YYY],
-#          label='Dmax: %s' % Dmax[YYY] + ' ' + '$\AA$')
+#          label='Dmax: %s'%Dmax[YYY] + ' ' + '$\AA$')
 # plt.plot(PDDF_list[YYY],
-#          label='Dmax: %.1f' % Dmax[YYY] + ' ' + '$\AA$')
+#          label='Dmax: %.1f'%Dmax[YYY] + ' ' + '$\AA$')
 # plt.plot(PDDF_list[YYY],
-#          label='Dmax: %.1f' % Dmax[YYY] + ' ' + '$\AA$')
+#          label='Dmax: %.1f'%Dmax[YYY] + ' ' + '$\AA$')
 # plt.plot(PDDF_list[YYY],
-#          label='Dmax: %.1f' % Dmax[YYY] + ' ' + '$\AA$')
+#          label='Dmax: %.1f'%Dmax[YYY] + ' ' + '$\AA$')
 # plt.plot(PDDF_list[YYY],
-#          label='Dmax: %.1f' % Dmax[YYY] + ' ' + '$\AA$')
+#          label='Dmax: %.1f'%Dmax[YYY] + ' ' + '$\AA$')
 # plt.plot(PDDF_list[YYY],
-#          label='Dmax: %.1f' % Dmax[YYY] + ' ' + '$\AA$')
+#          label='Dmax: %.1f'%Dmax[YYY] + ' ' + '$\AA$')
 # plt.plot(PDDF_list[YYY],
-#          label='Dmax: %.1f' % Dmax[YYY] + ' ' + '$\AA$')
+#          label='Dmax: %.1f'%Dmax[YYY] + ' ' + '$\AA$')
 # plt.plot(PDDF_list[YYY],
-#          label='Dmax: %.1f' % Dmax[YYY] + ' ' + '$\AA$')
+#          label='Dmax: %.1f'%Dmax[YYY] + ' ' + '$\AA$')
 # plt.plot(PDDF_list[YYY],
-#          label='Dmax: %.1f' % Dmax[YYY] + ' ' + '$\AA$')
+#          label='Dmax: %.1f'%Dmax[YYY] + ' ' + '$\AA$')
 # plt.plot(PDDF_list[YYY],
-#          label='Dmax: %.1f' % Dmax[YYY] + ' ' + '$\AA$')
+#          label='Dmax: %.1f'%Dmax[YYY] + ' ' + '$\AA$')
 # plt.legend(loc='best')
 # plt.ylim(bottom=0,top=1.09)
-# plt.xlim(-5,145)
+# plt.xlim(-5,115)
 # plt.ylabel('P(r)',size=14)
 # plt.xlabel('No. of Points',size=14)
+# #plt.ylim(bottom=0,top=4000000)
 # plt.savefig('VariableDmax_PDDF2.png',bbox_inches='tight',dpi=300,
 #             format='png')
 # plt.show()
 
+
 '''
 How to export data? What if a collaborator wants only a data frame from your analysis, not the entire script and repository?
 '''
+# r0,Pr0=r_range[YYY],PDDF_list[YYY]
+# entryCount=YYY
 
-# r0,Pr0 = np.linspace(0,Dmax[YYY] * 1.4,n),PDDF_list[YYY] # Lets just export the first entry
-
-# entryCount = YYY
 # with open('example_export.csv','w',newline='') as csvfile:
-#     fieldnames = ['Index','r0(A)','P(r)']
-#     thewriter = csv.DictWriter(csvfile,fieldnames=YYY)
+#     fieldnames=['Index','r0(A)','P(r)']
+#     thewriter=csv.DictWriter(csvfile,fieldnames=fieldnames)
 #     thewriter.writeheader()
-#     n=len(YYY)
-#     for i in range(YYY):
-#         entryCount += 1
-#         thewriter.writerow({'Index':entryCount,'r0(A)':r0[YYY],'P(r)':Pr0[YYY]})
-
+#     n=len(r0)
+#     for i in range(n):
+#         entryCount YYY 1 # for each iteration of the loop, what do we want to do to entrycount?
+#         thewriter.writerow({'Index':entryCount,'r0(A)':r0[i],'P(r)':Pr0[i]})
 
 '''
-Extra credit: Can you write a loop that exports all of the P(r)/r data?
+Can you write a loop that exports all of the r/P(r) data?
 '''

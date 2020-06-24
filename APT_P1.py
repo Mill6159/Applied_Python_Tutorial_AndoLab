@@ -361,7 +361,7 @@ Extra credit: Write a function that normalizes integral from rmin-rmax to 1
 def quickNormalize(sig):
     n=len(sig)
     sig=np.absolute(sig)
-    maxY=max(sig)
+    maxY=np.nanmax(sig)
     minY=min(sig)
     if np.isnan(minY):
         minY=0
@@ -371,13 +371,14 @@ def quickNormalize(sig):
     return Ynew 
 
 
-Pr_norm = quickNormalize(Pr) # recall we are overwritng the previous Pr value
+Pr_norm = quickNormalize(Pr) # creating a new data object (for testing).
 
-
-### I NEED TO FIX A FEW THINGS HERE
 
 '''
 Note: Here we are adding a baseline(Y2) to improve the visualization
+How can we write that?
+Hint: How can you create a list of a single value repeated n times? where n = len(Pr_norm).
+baseline = Y2
 '''
 visuals.twoPlot(X=r,Y1=Pr_norm,Y2=[0]*len(Pr_norm),savelabel='Example_Pr',plotlabel1='Pair Distance Distribution',plotlabel2='Baseline',
                   xlabel='r($\AA$)',ylabel='P(r)',linewidth=4)
@@ -387,79 +388,38 @@ visuals.twoPlot(X=r,Y1=Pr_norm,Y2=[0]*len(Pr_norm),savelabel='Example_Pr',plotla
 How can we approximate Dmax?
     (1) Iterateover the PDDF function
     (2) Save to memory the value of Dmax that gives P(rmin) & P(rmax) = 0
-    
-First we will modify the PDDF function (PDDF_2) slightly to make our lives easier
 '''
 
-def PDDF_2(shape,Dmax,I,q): # set a fixed length of r values
-    """plot pair distance distribution""" # this will make things a lot easier to deal with downstream
-    # reference:"Svergen&Koch,Rep.Phys.Prog 66(2003) 1735-82
-    r_range=np.linspace(0,Dmax*1.4,100)
-    if shape == "FoxS":
-        if q[0] == 0:
-            q = q[1:]
-            I = I[1:]
-            # Taking the first point in exp_q out if it's 0, avoiding dividing by 0 problem
-        else:
-            q = q
 
-    P_r = np.array([], dtype=float)
-    
-    '''
-    Can you think of a better, or different, way to write this loop?
-    '''
-    
-    for r in r_range:
-        p_r = np.sum(q ** 2 * I * np.sin(q * r) / (q * r) * 0.02) * (r ** 2) / (2.0 * np.pi ** 2)
-        P_r = np.append(P_r, p_r)
-             
-    nanCount = np.isnan(P_r).sum()
-    #print('# of nan values: %s'%nanCount)
-    P_r = P_r[np.logical_not(np.isnan(P_r))]
-    r=r_range[nanCount:] 
+'''Set parameters for iterations of PDDF'''
 
-    return P_r
-
-
-## Set parameters for iterations of PDDF    
 interval=10 # sets number of iterations
 dmin,dmax=45,85
 Dmax=np.linspace(dmin,dmax,interval)
 print('Final Dmax Value in the Dmax list: %s'%Dmax[9])
-n = len(PDDF_2(shape='FoxS',Dmax=Dmax[0],I=data['I(q)'],q=data['q']))
-
-PDDF_list=np.empty(shape=((interval),n)) #PDDF_list=np.empty(shape=((interval),n)) #
-
-#i=9
-#while i<9:
-    #Prtest[i],r[i]=PDDF(shape='FoxS',Dmax=Dmax[i],I=data['I(q)'],q=data['q'])
-#    i+=1
-#test=[[np.empty(len(Pr))],[np.empty(70)]]
 
 '''
-Need the length of each data set extracted from PDDF
-should be 99 everytime..
+We need to create an empty array of n columns that we can append to throughout the iterations
 '''
 
+PDDF_list=np.empty((interval,0)).tolist()
+r_range=np.empty((interval,0)).tolist()
 
-for i in PDDF_list:
+
+'''
+Now iterate over both the lists and append the output of PDDF() for each Dmax value
+'''
+
+for i in PDDF_list and r_range:
     for i in range(0,(interval)):
-        PDDF_list[i]=(PDDF_2(shape='FoxS',Dmax=Dmax[i],I=data['I(q)'],q=data['q']))
-        
+        PDDF_list[i],r_range[i] = (PDDF(shape='FoxS',Dmax=Dmax[i],I=data['I(q)'],q=data['q']))
+
+'''
+Normalize the PDDF signal between 0 and 1
+'''
+
 for i in range(len(PDDF_list)):
     PDDF_list[i]=quickNormalize(PDDF_list[i])
-
-
-# testP = np.empty(shape=(interval),order='F')
-# testR = np.empty(shape=(interval),order='F')
-# testP=np.empty((interval,0)).tolist()
-# testR=np.empty((interval,0)).tolist()
-# print(len(testP))
-# for j in range(0,interval):
-#     testP,testR = (PDDF(shape='FoxS',Dmax=Dmax[j],I=data['I(q)'],q=data['q']))
-#
-# print(testP[:,0])
-
 
 '''
 Quick example of how to 'toss' together a plot when it is necessary to do so quickly
@@ -471,25 +431,27 @@ or it isn't worth the effort (for some reason) to make the plots publication qua
 (2) Plotted as a function of the number of points (fixed, 99 for every profile) for better visualization
 '''
 
-plt.plot(np.linspace(0,Dmax[0]*1.4,n),PDDF_list[0],
+# plt.plot(np.linspace(0,Dmax[0]*1.4,n),PDDF_list[0],
+#          label='Dmax: %.1f'%Dmax[0] + ' ' + '$\AA$')
+plt.plot(r_range[0],PDDF_list[0],
          label='Dmax: %.1f'%Dmax[0] + ' ' + '$\AA$')
-plt.plot(np.linspace(0,Dmax[1]*1.4,n),PDDF_list[1],
+plt.plot(r_range[1],PDDF_list[1],
          label='Dmax: %.1f'%Dmax[1] + ' ' + '$\AA$')
-plt.plot(np.linspace(0,Dmax[2]*1.4,n),PDDF_list[2],
+plt.plot(r_range[2],PDDF_list[2],
          label='Dmax: %.1f'%Dmax[2] + ' ' + '$\AA$')
-plt.plot(np.linspace(0,Dmax[3]*1.4,n),PDDF_list[3],
+plt.plot(r_range[3],PDDF_list[3],
          label='Dmax: %.1f'%Dmax[3] + ' ' + '$\AA$')
-plt.plot(np.linspace(0,Dmax[4]*1.4,n),PDDF_list[4],
+plt.plot(r_range[4],PDDF_list[4],
          label='Dmax: %.1f'%Dmax[4] + ' ' + '$\AA$')
-plt.plot(np.linspace(0,Dmax[5]*1.4,n),PDDF_list[5],
+plt.plot(r_range[5],PDDF_list[5],
          label='Dmax: %.1f'%Dmax[5] + ' ' + '$\AA$')
-plt.plot(np.linspace(0,Dmax[6]*1.4,n),PDDF_list[6],
+plt.plot(r_range[6],PDDF_list[6],
          label='Dmax: %.1f'%Dmax[6] + ' ' + '$\AA$')
-plt.plot(np.linspace(0,Dmax[7]*1.4,n),PDDF_list[7],
+plt.plot(r_range[7],PDDF_list[7],
          label='Dmax: %.1f'%Dmax[7] + ' ' + '$\AA$')
-plt.plot(np.linspace(0,Dmax[8]*1.4,n),PDDF_list[8],
+plt.plot(r_range[8],PDDF_list[8],
          label='Dmax: %.1f'%Dmax[8] + ' ' + '$\AA$')
-plt.plot(np.linspace(0,Dmax[9]*1.4,n),PDDF_list[9],
+plt.plot(r_range[9],PDDF_list[9],
          label='Dmax: %.1f'%Dmax[9] + ' ' + '$\AA$')
 plt.ylabel('P(r)',size=14)
 plt.xlabel('r ($\\AA$)',size=14)
@@ -525,7 +487,7 @@ plt.plot(PDDF_list[9],
          label='Dmax: %.1f'%Dmax[9] + ' ' + '$\AA$')
 plt.legend(loc='best')
 plt.ylim(bottom=0,top=1.09)
-plt.xlim(-5,145)
+plt.xlim(-5,115)
 plt.ylabel('P(r)',size=14)
 plt.xlabel('No. of Points',size=14)
 #plt.ylim(bottom=0,top=4000000)
@@ -537,7 +499,7 @@ plt.show()
 '''
 How to export data? What if a collaborator wants only a data frame from your analysis, not the entire script and repository?
 '''
-r0,Pr0=np.linspace(0,Dmax[0]*1.4,n),PDDF_list[0]
+r0,Pr0=r_range[0],PDDF_list[0]
 entryCount=0
 
 with open('example_export.csv','w',newline='') as csvfile:
