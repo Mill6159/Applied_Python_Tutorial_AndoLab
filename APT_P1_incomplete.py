@@ -20,6 +20,7 @@ Learning Objectives:
     (8) Data export
 
 Where you see "YYY" you need to add input!
+**Uncomment lines in spyder with control-1
 '''
 
 '''
