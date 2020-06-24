@@ -10,7 +10,7 @@ from matplotlib import pyplot as plt
 
 class PlotClass:
     
-    def __init__(self):
+    def __init__(self,notify=True):
         '''
         Describe the class here.
         The initialization of the class sets a few global parameters
@@ -21,9 +21,11 @@ class PlotClass:
             provided by MacOS. If this is important to you, let me know, it's a pretty quick fix!
             Rob: rcm347@cornell.edu
         '''
-        print('--------------------------------------------------------------')
-        print('Plot class was called')
-        print('--------------------------------------------------------------')
+        self.notify=notify
+        if self.notify==True:
+            print('--------------------------------------------------------------')
+            print('Plot class was called')
+            print('--------------------------------------------------------------')
         
         self.axes=plt.rc('axes',linewidth=2)
         self.lines=plt.rc('lines',markeredgewidth=2)
