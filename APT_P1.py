@@ -172,7 +172,7 @@ c,cov = cf(lineModel,data['q'][nmin:nmax]**2,np.log(data['I(q)'][nmin:nmax]),g,
 
 scipyI0=np.exp(c[1])
 scipyRg = np.sqrt(-3*c[0])
-scipyRg_relErr = np.absolute(cov[0,0]/c[0])
+scipyRg_Err = np.absolute(scipyRg * np.sqrt(cov[0,0])/(2*c[0]))
 scipy_qminRg = scipyRg*data['q'][nmin]
 scipy_qmaxRg = scipyRg*data['q'][nmax]
 
@@ -184,10 +184,9 @@ hb_slope,hb_inter,hb_sigslope,hb_siginter = lsq_w_sigma(data['q'][nmin:nmax]**2,
                                                         data['I(q)_Error'][nmin:nmax]/data['I(q)'][nmin:nmax])
 hbI0=np.exp(hb_inter)
 hbRg = np.sqrt(-3*hb_slope)
-hbRg_relErr = np.absolute(hb_sigslope/hb_slope)
+hbRg_Err = np.absolute(hbRg* np.sqrt(hb_sigslope)/(2*hb_slope))
 hb_qminRg = hbRg*data['q'][nmin]
 hb_qmaxRg = hbRg*data['q'][nmax]
-
 
 '''
 We will create a dictionary of all of the useful data values
@@ -205,7 +204,7 @@ For references:
     (2) Numerical Recipes: Press, William H., et al. Numerical recipes 3rd edition: The art of scientific computing. Cambridge university press, 2007.
 '''
 scipy_dict = {'scipy_qminRg':scipy_qminRg,'scipy_qmaxRg':scipy_qmaxRg,
-              'scipyRg':scipyRg,'scipyRg_relErr':scipyRg_relErr}
+              'scipyRg':scipyRg,'scipyRg_Err':scipyRg_Err}
 
 #print(scipy_dict.keys()) # very useful property of dictionaries
 #print(scipy_dict.values())
@@ -214,10 +213,10 @@ scipy_dict = {'scipy_qminRg':scipy_qminRg,'scipy_qmaxRg':scipy_qmaxRg,
 Example of how to clean up the output a bit
 '''
 
-print('from scipy fit, Rg and Rg relative Error: %.2f %.8f'%(scipy_dict['scipyRg'],
-                                                             scipy_dict['scipyRg_relErr']))
+print('from scipy fit, Rg and Rg Error: %.2f %.8f'%(scipy_dict['scipyRg'],
+                                                             scipy_dict['scipyRg_Err']))
 
-hb_dict = {'hb_qminRg':hb_qminRg,'hb_qmaxRg':hb_qmaxRg,'hbRg':hbRg,'hbRg_relErr':hbRg_relErr}
+hb_dict = {'hb_qminRg':hb_qminRg,'hb_qmaxRg':hb_qmaxRg,'hbRg':hbRg,'hbRg_Err':hbRg_Err}
 #print(hb_dict.keys()) # very useful property of dictionaries
 #print(hb_dict.values())
 
@@ -225,21 +224,21 @@ hb_dict = {'hb_qminRg':hb_qminRg,'hb_qmaxRg':hb_qmaxRg,'hbRg':hbRg,'hbRg_relErr'
 Example of how to clean up the output a bit
 '''
 
-print('from hb fit, Rg and Rg relative Error: %.2f %.8f'%(hb_dict['hbRg'],
-                                                             hb_dict['hbRg_relErr']))
+print('from hb fit, Rg and Rg Error: %.2f %.8f'%(hb_dict['hbRg'],
+                                                             hb_dict['hbRg_Err']))
 
-print('qminRg,qmaxRg',hb_dict['hb_qminRg'],hb_dict['hb_qmaxRg'])
+print('qminRg,qmaxRg: %.4f %.4f'%(hb_dict['hb_qminRg'],hb_dict['hb_qmaxRg']))
 
 '''
 Generate an automated output to "warn" us if the relative error is 
 greater than 1%
 '''
 
-if (100*hb_dict['hbRg_relErr']) > 1.0:
-    print('Percent relative error in Rg is greater than 1%:' + ' ' + '%.2f'%(100*hb_dict['hbRg_relErr'])+'%')
+if (100*(hb_dict['hbRg_Err']/hbRg)) > 1.0:
+    print('Percent relative error in Rg is greater than 1%:' + ' ' + '%.2f'%(100*(hb_dict['hbRg_Err']/hbRg))+'%')
     print('Review quality of fit')
 else:
-    print('Percent relative error in Rg is less than 1%:' + ' ' + '%.2f'%(100*hb_dict['hbRg_relErr'])+'%')
+    print('Percent relative error in Rg is less than 1%:' + ' ' + '%.2f'%(100*(hb_dict['hbRg_Err']/hbRg))+'%')
     print(' ')
 
 '''

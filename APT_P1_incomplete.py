@@ -167,7 +167,7 @@ Nuisance points:
 #
 # scipyI0 = np.exp(c[YYY])
 # scipyRg = np.sqrt(-3 * c[YYY])
-# scipyRg_relErr = np.absolute(cov[0,0] / c[0])
+# scipyRg_Err = np.absolute(scipyRg * np.sqrt(cov[0,0])/(2*c[0]))
 # scipy_qminRg = scipyRg * YYY
 # scipy_qmaxRg = scipyRg * YYY
 
@@ -179,7 +179,7 @@ Perform the analysis with our "homebaked" function
 #                                                         data['I(q)_Error'][YYY:YYY] / data['I(q)'][YYY:YYY])
 # hbI0 = np.exp(YYY)
 # hbRg = np.sqrt(-3 * YYY)
-# hbRg_relErr = np.absolute(YYY / YYY)
+# hbRg_Err = np.absolute(hbRg* np.sqrt(hb_sigslope)/(2*hb_slope))
 # hb_qminRg = hbRg * data['q'][YYY]
 # hb_qmaxRg = hbRg * data['q'][YYY]
 
@@ -191,14 +191,14 @@ Extract the following information:
     (1) Rg/Relative Error in Rg
     (2) qminRg,qmaxRg (acceptable Guiner region verification)
     (3) Comparison of the two results (scipy vs 'homebaked function')
-Note: We need to convert our results in order to determine Rg and the relative error in Rg (performed above)
+Note: We converted the results of our LSM in order to determine Rg and the error in Rg (performed above)
 For references:
     (1) https://github.com/Mill6159/SAXSProf_Desktop_GUI/blob/master/Analytical_Derivation_Final.pdf
     (2) Numerical Recipes: Press, William H., et al. Numerical recipes 3rd edition: The art of scientific computing. Cambridge university press, 2007.
 '''
 
 # scipy_dict = {'scipy_qminRg':scipy_qminRg,'scipy_qmaxRg':scipy_qmaxRg,
-#               'scipyRg':scipyRg,'scipyRg_relErr':scipyRg_relErr}
+#               'scipyRg':scipyRg,'scipyRg_Err':scipyRg_Err}
 
 # print(scipy_dict.keys()) # very useful property of dictionaries
 # print(scipy_dict.values())
@@ -207,10 +207,10 @@ For references:
 Example of how to clean up the output a bit
 '''
 
-# print('from scipy fit, Rg and Rg relative Error: %.2f %.8f' % (scipy_dict['scipyRg'],
-#                                                                scipy_dict['scipyRg_relErr']))
+# print('from scipy fit, Rg and Rg Error: %.2f %.8f' % (scipy_dict['scipyRg'],
+#                                                                scipy_dict['scipyRg_Err']))
 
-# hb_dict = {'hb_qminRg':hb_qminRg,'hb_qmaxRg':hb_qmaxRg,'hbRg':hbRg,'hbRg_relErr':hbRg_relErr}
+# hb_dict = {'hb_qminRg':hb_qminRg,'hb_qmaxRg':hb_qmaxRg,'hbRg':hbRg,'hbRg_Err':hbRg_Err}
 # # print(hb_dict.keys()) # very useful property of dictionaries
 # # print(hb_dict.values())
 
@@ -218,10 +218,9 @@ Example of how to clean up the output a bit
 Example of how to clean up the output a bit
 '''
 
-# print('from hb fit, Rg and Rg relative Error: %.2f %.8f' % (YYY,
-#                                                             YYY))
+# print('from hb fit, Rg and Rg Error: %.2f %.8f' % (YYY, YYY))
 
-# print('qminRg,qmaxRg',YYY,YYY)
+# print('qminRg,qmaxRg: %.4f %.4f'%(YYY,YYY))
 
 '''
 Generate an automated output to "warn" us if the relative error is
@@ -229,11 +228,11 @@ greater than 1%
 hint: we need a conditional statement here!
 '''
 
-# YYY (100 * hb_dict['hbRg_relErr']) > 1.0:
-#     print('Percent relative error in Rg is greater than 1%:' + ' ' + '%.2f' % (100 * hb_dict['hbRg_relErr']) + '%')
+# YYY (100 * (hb_dict['hbRg_Err']/hbRg)) > 1.0:
+#     print('Percent relative error in Rg is greater than 1%:' + ' ' + '%.2f' % (100 * (hb_dict['hbRg_Err']/hbRg)) + '%')
 #     print('Review quality of fit')
 # YYY:
-#     print('Percent relative error in Rg is less than 1%:' + ' ' + '%.2f' % (100 * hb_dict['hbRg_relErr']) + '%')
+#     print('Percent relative error in Rg is less than 1%:' + ' ' + '%.2f' % (100 * (hb_dict['hbRg_Err']/hbRg)) + '%')
 #     print(' ')
 
 '''
