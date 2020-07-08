@@ -44,9 +44,9 @@ warnings.filterwarnings("ignore",category=RuntimeWarning)  # deals with dividing
 Import FoxS Data: I generated this for us from the crystal structure PDBID: 6MT9
 '''
 
-# data = np.loadtxt('YYY', # https://numpy.org/doc/stable/reference/generated/numpy.loadtxt.html
-#                   dtype={'names':('q','I(q)','I(q)_Error'),'formats':(YYY,YYY,YYY)}, # float vs int?
-#                   comments='#')
+data = np.loadtxt('6MT9.pdb.dat', # https://numpy.org/doc/stable/reference/generated/numpy.loadtxt.html
+                  dtype={'names':('q','I(q)','I(q)_Error'),'formats':(np.float,np.float,np.float)}, # float vs int?
+                  comments='#')
 
 '''
 How can we access the data?
@@ -496,6 +496,23 @@ or it isn't worth the effort (for some reason) to make the plots publication qua
 #             format='png')
 # plt.show()
 
+'''
+Best approximation of Dmax?
+'''
+
+# def dMax_Searcher(pddf):
+#     tosort=[]
+#     for YYY in pddf:
+#         n=len(YYY)
+#         tosort.append(i[n-1])
+#     minVal = np.nanmin(YYY)
+#     minIndex= tosort.index(YYY)
+
+#     return minVal, minIndex
+
+# dMaxVal, dMaxIndex = dMax_Searcher(PDDF_list)
+
+# print('The most likely Dmax value is: %.2f'%Dmax[dMaxIndex] + ' ' + 'Angstroms')
 
 '''
 How to export data? What if a collaborator wants only a data frame from your analysis, not the entire script and repository?
